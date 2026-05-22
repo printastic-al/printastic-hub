@@ -294,6 +294,114 @@ body{
 
 <body>
 
+<div id="loginScreen" style="
+position:fixed;
+inset:0;
+background:#050816;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999999;
+padding:20px;
+">
+
+<div style="
+width:100%;
+max-width:420px;
+background:rgba(15,23,42,0.92);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:34px;
+padding:40px;
+backdrop-filter:blur(20px);
+">
+
+<div style="
+font-size:38px;
+font-weight:900;
+margin-bottom:10px;
+text-align:center;
+background:
+linear-gradient(
+90deg,
+white,
+#818cf8,
+#06b6d4
+);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+">
+PRINTASTIC ADMIN
+</div>
+
+<div style="
+text-align:center;
+color:#94a3b8;
+margin-bottom:30px;
+">
+Área privada
+</div>
+
+<input
+type="text"
+id="loginUser"
+placeholder="Utilizador"
+style="
+width:100%;
+margin-bottom:18px;
+padding:18px;
+border-radius:18px;
+border:1px solid rgba(255,255,255,0.08);
+background:rgba(255,255,255,0.05);
+color:white;
+font-size:16px;
+"
+>
+
+<input
+type="password"
+id="loginPass"
+placeholder="Password"
+style="
+width:100%;
+margin-bottom:22px;
+padding:18px;
+border-radius:18px;
+border:1px solid rgba(255,255,255,0.08);
+background:rgba(255,255,255,0.05);
+color:white;
+font-size:16px;
+"
+>
+
+<button
+onclick="fazerLogin()"
+style="
+width:100%;
+border:none;
+padding:18px;
+border-radius:18px;
+font-size:17px;
+font-weight:800;
+cursor:pointer;
+color:white;
+background:
+linear-gradient(
+90deg,
+#6366f1,
+#8b5cf6,
+#06b6d4
+);
+"
+>
+
+Entrar
+
+</button>
+
+</div>
+
+</div>
+
 <div class="container">
 
     <div class="topbar">
@@ -319,7 +427,68 @@ body{
 </div>
 
 <script>
+const ADMIN_USER =
+"josealmanso";
 
+const ADMIN_PASS =
+"1983Ja1002";
+
+function fazerLogin(){
+
+    const user =
+    document.getElementById(
+        "loginUser"
+    ).value;
+
+    const pass =
+    document.getElementById(
+        "loginPass"
+    ).value;
+
+    if(
+        user === ADMIN_USER &&
+        pass === ADMIN_PASS
+    ){
+
+        sessionStorage.setItem(
+            "printastic_admin",
+            "true"
+        );
+
+        document.getElementById(
+            "loginScreen"
+        ).style.display = "none";
+
+    }else{
+
+        alert(
+            "Login inválido."
+        );
+
+    }
+
+}
+
+if(
+
+    sessionStorage.getItem(
+        "printastic_admin"
+    ) === "true"
+
+){
+
+    window.addEventListener(
+        "load",
+        ()=>{
+
+            document.getElementById(
+                "loginScreen"
+            ).style.display = "none";
+
+        }
+    );
+
+}
 const API_URL =
 "https://script.google.com/macros/s/AKfycbz1pSn2pa3bUHKZrlWBL1_x0ApuPRsYRbtNOBSoV_3S9mOr9Ap4Vb-ILRcs4XFwcT2E/exec";
 
