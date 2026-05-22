@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Printastic HUB</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    --bg:#0b1120;
+
+    --panel:rgba(17,24,39,0.82);
+
+    --border:rgba(255,255,255,0.08);
+
+    --text:#ffffff;
+
+    --muted:#94a3b8;
+
+    --blue:#6366f1;
+
+    --blue2:#8b5cf6;
+
+    --green:#22c55e;
+
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:
+    radial-gradient(circle at top left,#312e81 0%,transparent 30%),
+    radial-gradient(circle at bottom right,#0f766e 0%,transparent 30%),
+    var(--bg);
+
+    min-height:100vh;
+
+    color:var(--text);
+
+    padding:40px 20px;
+
+}
+
+.container{
+
+    max-width:1100px;
+
+    margin:auto;
+
+}
+
+.hero{
+
+    text-align:center;
+
+    margin-bottom:40px;
+
+}
+
+.logo{
+
+    font-size:42px;
+
+    font-weight:800;
+
+    background:linear-gradient(90deg,#fff,#818cf8);
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    margin-bottom:12px;
+
+}
+
+.subtitle{
+
+    color:var(--muted);
+
+    font-size:18px;
+
+    line-height:1.6;
+
+}
+
+.card{
+
+    background:var(--panel);
+
+    border:1px solid var(--border);
+
+    border-radius:30px;
+
+    padding:40px;
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,0.35);
+
+}
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:22px;
+
+}
+
+.field{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.field.full{
+
+    grid-column:1 / -1;
+
+}
+
+label{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#dbe4ff;
+
+}
+
+input,
+textarea,
+select{
+
+    width:100%;
+
+    background:rgba(255,255,255,0.04);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:18px;
+
+    padding:16px;
+
+    color:white;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:0.2s;
+
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+
+    border-color:#818cf8;
+
+    box-shadow:0 0 0 4px rgba(99,102,241,0.2);
+
+}
+
+textarea{
+
+    min-height:140px;
+
+    resize:vertical;
+
+}
+
+.upload{
+
+    border:2px dashed rgba(255,255,255,0.12);
+
+    border-radius:22px;
+
+    padding:40px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    transition:0.2s;
+
+}
+
+.upload:hover{
+
+    border-color:#818cf8;
+
+    background:rgba(99,102,241,0.05);
+
+}
+
+button{
+
+    background:linear-gradient(90deg,var(--blue),var(--blue2));
+
+    color:white;
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.2s;
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 30px rgba(99,102,241,0.35);
+
+}
+
+.success{
+
+    margin-top:25px;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    background:rgba(34,197,94,0.12);
+
+    border:1px solid rgba(34,197,94,0.25);
+
+    display:none;
+
+}
+
+@media(max-width:900px){
+
+    .grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="hero">
+
+        <div class="logo">
+            PRINTASTIC HUB
+        </div>
+
+        <div class="subtitle">
+            Envia os teus pedidos DTF, artes e links Canva<br>
+            de forma rápida, organizada e profissional.
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <form id="pedidoForm">
+
+            <div class="grid">
+
+                <div class="field">
+
+                    <label>Nome</label>
+
+                    <input type="text" id="nome" required>
+
+                </div>
+
+                <div class="field">
+
+                    <label>Empresa</label>
+
+                    <input type="text" id="empresa">
+
+                </div>
+
+                <div class="field">
+
+                    <label>Telemóvel</label>
+
+                    <input type="text" id="telemovel" required>
+
+                </div>
+
+                <div class="field">
+
+                    <label>Email</label>
+
+                    <input type="email" id="email">
+
+                </div>
+
+                <div class="field full">
+
+                    <label>Morada</label>
+
+                    <input type="text" id="morada">
+
+                </div>
+
+                <div class="field">
+
+                    <label>Tipo de Pedido</label>
+
+                    <select id="tipoPedido">
+
+                        <option>DTF</option>
+                        <option>UV DTF</option>
+                        <option>Sublimação</option>
+                        <option>Laser</option>
+                        <option>Outro</option>
+
+                    </select>
+
+                </div>
+
+                <div class="field">
+
+                    <label>Quantidade</label>
+
+                    <input type="text" id="quantidade">
+
+                </div>
+
+                <div class="field full">
+
+                    <label>Link Canva</label>
+
+                    <input type="text" id="canvaLink">
+
+                </div>
+
+                <div class="field full">
+
+                    <label>Observações</label>
+
+                    <textarea id="observacoes"></textarea>
+
+                </div>
+
+                <div class="field full">
+
+                    <label>Artes / Ficheiros</label>
+
+                    <div class="upload">
+                        Arrasta aqui os ficheiros<br><br>
+                        (uploads reais na próxima fase 😄)
+                    </div>
+
+                </div>
+
+                <div class="field full">
+
+                    <button type="submit">
+                        Enviar Pedido
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <div class="success" id="successBox"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+const API_URL = "https://script.google.com/macros/s/AKfycbz1pSn2pa3bUHKZrlWBL1_x0ApuPRsYRbtNOBSoV_3S9mOr9Ap4Vb-ILRcs4XFwcT2E/exec";
+
+const form = document.getElementById("pedidoForm");
+
+form.addEventListener("submit", async (e)=>{
+
+    e.preventDefault();
+
+    const btn = document.querySelector("button");
+
+    btn.innerHTML = "A enviar pedido...";
+    btn.disabled = true;
+
+    const data = {
+
+        nome:document.getElementById("nome").value,
+        empresa:document.getElementById("empresa").value,
+        telemovel:document.getElementById("telemovel").value,
+        email:document.getElementById("email").value,
+        morada:document.getElementById("morada").value,
+        tipoPedido:document.getElementById("tipoPedido").value,
+        quantidade:document.getElementById("quantidade").value,
+        observacoes:document.getElementById("observacoes").value,
+        canvaLink:document.getElementById("canvaLink").value
+
+    };
+
+    try{
+
+        const response = await fetch(API_URL,{
+
+            method:"POST",
+
+            body:JSON.stringify(data)
+
+        });
+
+        const result = await response.json();
+
+        if(result.success){
+
+            document.getElementById("successBox").style.display="block";
+
+            document.getElementById("successBox").innerHTML=`
+
+                ✅ Pedido enviado com sucesso!<br><br>
+
+                <strong>${result.pedidoID}</strong><br><br>
+
+                A equipa da Printastic irá analisar o pedido.
+
+            `;
+
+            form.reset();
+
+        }else{
+
+            alert(result.error);
+
+        }
+
+    }catch(error){
+
+        alert("Erro ao enviar pedido.");
+
+    }
+
+    btn.innerHTML = "Enviar Pedido";
+    btn.disabled = false;
+
+});
+
+</script>
+
+</body>
+</html>
