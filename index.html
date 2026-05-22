@@ -516,11 +516,7 @@ form.addEventListener("submit", async (e)=>{
         const result = await response.json();
 
         if(result.success){
-const folderId = result.folderId;
-
-// ========================================
-// UPLOADS SEPARADOS
-// ========================================
+const uploads = [];
 
 for(let file of ficheirosInput.files){
 
@@ -537,28 +533,44 @@ for(let file of ficheirosInput.files){
 
     }
 
-    const base64 =
-        await toBase64(ficheiroFinal);
+    const formData = new FormData();
 
-    await fetch(API_URL,{
+    formData.append(
+        "file",
+        ficheiroFinal
+    );
 
-        method:"POST",
+    formData.append(
+        "upload_preset",
+        UPLOAD_PRESET
+    );
 
-        body:JSON.stringify({
+    formData.append(
+        "folder",
+        "printastic_hub"
+    );
 
-            action:"uploadFile",
+    const cloudinaryResponse =
+        await fetch(
 
-            folderId:folderId,
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`,
 
-            nome:file.name,
+        {
 
-            mimeType:file.type,
+            method:"POST",
 
-            base64:base64.split(",")[1]
+            body:formData
 
-        })
+        }
 
-    });
+    );
+
+    const cloudinaryData =
+        await cloudinaryResponse.json();
+
+    uploads.push(
+        cloudinaryData.secure_url
+    );
 
 }
             document.getElementById("successBox").style.display="block";
