@@ -1365,11 +1365,12 @@ function renderFicheiros(){
                         </label>
 
                         <input
-                            type="number"
-                            placeholder="Ex: 28"
-                            class="larguraInput"
-                            data-index="${index}"
-                        >
+    type="number"
+    placeholder="Ex: 28"
+    class="larguraInput"
+    data-index="${index}"
+    required
+>
 
                         <div class="fileHint">
 
@@ -1454,7 +1455,25 @@ function renderFicheiros(){
 form.addEventListener("submit", async (e)=>{
 
     e.preventDefault();
+const larguras = document.querySelectorAll(
+    ".larguraInput"
+);
 
+for(let largura of larguras){
+
+    if(!largura.value){
+
+        alert(
+            "Todos os ficheiros devem ter largura definida."
+        );
+
+        largura.focus();
+
+        return;
+
+    }
+
+}
     const btn = document.querySelector("button");
 
     btn.disabled = true;
