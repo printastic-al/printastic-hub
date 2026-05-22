@@ -1508,6 +1508,7 @@ document.getElementById(
 ).innerHTML =
 "A enviar ficheiros...";            
 const uploads = [];
+const detalhesFicheiros = [];
 
 for(let file of ficheirosSelecionados){
 
@@ -1559,9 +1560,31 @@ for(let file of ficheirosSelecionados){
     const cloudinaryData =
         await cloudinaryResponse.json();
 
-    uploads.push(
-        cloudinaryData.secure_url
-    );
+    const largura = document.querySelector(
+    `.larguraInput[data-index="${ficheirosSelecionados.indexOf(file)}"]`
+)?.value || "";
+
+const quantidade = document.querySelector(
+    `.quantidadeInput[data-index="${ficheirosSelecionados.indexOf(file)}"]`
+)?.value || "1";
+
+const observacao = document.querySelector(
+    `.obsFicheiroInput[data-index="${ficheirosSelecionados.indexOf(file)}"]`
+)?.value || "";
+
+detalhesFicheiros.push({
+
+    url: cloudinaryData.secure_url,
+
+    nome: file.name,
+
+    largura,
+
+    quantidade,
+
+    observacao
+
+});
 
 }
             document.getElementById(
@@ -1578,7 +1601,7 @@ for(let file of ficheirosSelecionados){
 
         pedidoID:result.pedidoID,
 
-        uploads:uploads
+        uploads:detalhesFicheiros
 
     })
 
