@@ -310,19 +310,17 @@ button:hover{
 
                 </div>
 
-                <div class="field">
-
-                    <label>Empresa</label>
-
-                    <input type="text" id="empresa">
-
-                </div>
 
                 <div class="field">
 
                     <label>Telemóvel</label>
 
-                    <input type="text" id="telemovel" required>
+                    <input 
+    type="tel" 
+    id="telemovel"
+    required
+    pattern="[0-9]{9}"
+>
 
                 </div>
 
@@ -330,7 +328,7 @@ button:hover{
 
                     <label>Email</label>
 
-                    <input type="email" id="email">
+                    <input type="email" id="email" required>
 
                 </div>
 
@@ -338,7 +336,7 @@ button:hover{
 
                     <label>Morada</label>
 
-                    <input type="text" id="morada">
+                    <input type="text" id="morada" required>
 
                 </div>
 
@@ -491,7 +489,6 @@ form.addEventListener("submit", async (e)=>{
     const data = {
 
         nome:document.getElementById("nome").value,
-        empresa:document.getElementById("empresa").value,
         telemovel:document.getElementById("telemovel").value,
         email:document.getElementById("email").value,
         morada:document.getElementById("morada").value,
