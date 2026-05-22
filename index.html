@@ -546,9 +546,9 @@ for(let file of ficheirosInput.files){
     );
 
     formData.append(
-        "folder",
-        "printastic_hub"
-    );
+    "folder",
+    `printastic_hub/${result.pedidoID}`
+);
 
     const cloudinaryResponse =
         await fetch(
