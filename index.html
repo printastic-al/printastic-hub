@@ -664,138 +664,318 @@ textarea{
 
     <div class="hero">
 
+        <div class="badge">
+            ⚡ Plataforma Inteligente de Pedidos
+        </div>
+
         <div class="logo">
             PRINTASTIC HUB
         </div>
 
-        <div class="subtitle">
-            Envia os teus pedidos DTF, artes e links Canva<br>
-            de forma rápida, organizada e profissional.
-        </div>
+        <h1>
+            Transformamos ideias em impressão profissional.
+        </h1>
+
+        <p>
+            Envia pedidos DTF, links Canva, PNGs e PDFs
+            numa plataforma rápida, organizada e moderna.
+        </p>
 
     </div>
 
-    <div class="card">
+    <div class="layout">
 
-        <form id="pedidoForm">
+        <div class="sidebar">
 
-            <div class="grid">
+            <div class="sideCard">
 
-                <div class="field">
+                <div class="sideTitle">
+                    🚀 Processo Simples
+                </div>
 
-                    <label>Nome</label>
+                <div class="sideText">
 
-                    <input type="text" id="nome" required>
+                    Centraliza todos os pedidos,
+                    ficheiros e artes numa única plataforma.
 
                 </div>
 
+                <div class="steps">
 
-                <div class="field">
+                    <div class="step">
 
-                    <label>Telemóvel</label>
+                        <div class="stepNumber">
+                            1
+                        </div>
 
-                    <input 
-    type="tel" 
-    id="telemovel"
-    required
-    pattern="[0-9]{9}"
->
+                        <div>
+                            Dados do cliente
+                        </div>
 
-                </div>
+                    </div>
 
-                <div class="field">
+                    <div class="step">
 
-                    <label>Email</label>
+                        <div class="stepNumber">
+                            2
+                        </div>
 
-                    <input type="email" id="email" required>
+                        <div>
+                            Upload das artes
+                        </div>
 
-                </div>
+                    </div>
 
-                <div class="field full">
+                    <div class="step">
 
-                    <label>Morada</label>
+                        <div class="stepNumber">
+                            3
+                        </div>
 
-                    <input type="text" id="morada" required>
+                        <div>
+                            Produção Printastic
+                        </div>
 
-                </div>
-
-                <div class="field">
-
-                    <label>Tipo de Pedido</label>
-
-                    <select id="tipoPedido">
-
-                        <option>DTF</option>
-                        <option>UV DTF</option>
-                        <option>Sublimação</option>
-                        <option>Laser</option>
-                        <option>Outro</option>
-
-                    </select>
-
-                </div>
-
-                <div class="field">
-
-                    <label>Quantidade</label>
-
-                    <input type="text" id="quantidade">
-
-                </div>
-
-                <div class="field full">
-
-                    <label>Link Canva</label>
-
-                    <input type="text" id="canvaLink">
-
-                </div>
-
-                <div class="field full">
-
-                    <label>Observações</label>
-
-                    <textarea id="observacoes"></textarea>
-
-                </div>
-
-                <div class="field full">
-
-                    <label>Artes / Ficheiros</label>
-
-                    <div class="upload">
-
-    <input 
-    type="file" 
-    id="ficheiros"
-    multiple
-    accept=".png,.pdf"
-    style="margin-bottom:20px;"
->
-
-    <div id="listaFicheiros">
-
-        Nenhum ficheiro selecionado.
-
-    </div>
-
-</div>
-
-                </div>
-
-                <div class="field full">
-
-                    <button type="submit">
-                        Enviar Pedido
-                    </button>
+                    </div>
 
                 </div>
 
             </div>
 
-        </form>
+            <div class="sideCard">
 
-        <div class="success" id="successBox"></div>
+                <div class="sideTitle">
+                    ☁️ Upload Inteligente
+                </div>
+
+                <div class="sideText">
+
+                    ✅ PNG<br>
+                    ✅ PDF<br>
+                    ✅ Links Canva<br>
+                    ✅ Upload otimizado
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mainCard">
+
+            <form id="pedidoForm">
+
+                <div class="section">
+
+                    <div class="sectionTitle">
+
+                        <div class="sectionIcon">
+                            👤
+                        </div>
+
+                        Dados Cliente
+
+                    </div>
+
+                    <div class="grid">
+
+                        <div class="field">
+
+                            <label>
+                                Nome
+                            </label>
+
+                            <input 
+                                type="text"
+                                id="nome"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="field">
+
+                            <label>
+                                Telemóvel
+                            </label>
+
+                            <input 
+                                type="tel"
+                                id="telemovel"
+                                required
+                                pattern="[0-9]{9}"
+                            >
+
+                        </div>
+
+                        <div class="field full">
+
+                            <label>
+                                Email
+                            </label>
+
+                            <input 
+                                type="email"
+                                id="email"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="field full">
+
+                            <label>
+                                Morada
+                            </label>
+
+                            <input 
+                                type="text"
+                                id="morada"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="section">
+
+                    <div class="sectionTitle">
+
+                        <div class="sectionIcon">
+                            🎨
+                        </div>
+
+                        Produção
+
+                    </div>
+
+                    <div class="grid">
+
+                        <div class="field">
+
+                            <label>
+                                Tipo de Pedido
+                            </label>
+
+                            <select id="tipoPedido">
+
+                                <option>DTF</option>
+                                <option>UV DTF</option>
+                                <option>Sublimação</option>
+                                <option>Laser</option>
+                                <option>Outro</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="field">
+
+                            <label>
+                                Quantidade
+                            </label>
+
+                            <input 
+                                type="text"
+                                id="quantidade"
+                            >
+
+                        </div>
+
+                        <div class="field full">
+
+                            <label>
+                                Link Canva
+                            </label>
+
+                            <input 
+                                type="text"
+                                id="canvaLink"
+                            >
+
+                        </div>
+
+                        <div class="field full">
+
+                            <label>
+                                Observações
+                            </label>
+
+                            <textarea id="observacoes"></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="section">
+
+                    <div class="sectionTitle">
+
+                        <div class="sectionIcon">
+                            ☁️
+                        </div>
+
+                        Upload Artes
+
+                    </div>
+
+                    <div class="upload">
+
+                        <div class="uploadIcon">
+                            📁
+                        </div>
+
+                        <div class="uploadTitle">
+                            Arrasta os ficheiros aqui
+                        </div>
+
+                        <div class="uploadText">
+
+                            PNG e PDF suportados
+                            <br>
+                            Upload rápido e otimizado
+
+                        </div>
+
+                        <input 
+                            type="file"
+                            id="ficheiros"
+                            multiple
+                            accept=".png,.pdf"
+                        >
+
+                        <div id="listaFicheiros">
+
+                            Nenhum ficheiro selecionado.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <button 
+                    type="submit"
+                    class="submitBtn"
+                >
+
+                    Enviar Pedido
+
+                </button>
+
+            </form>
+
+            <div 
+                class="success"
+                id="successBox"
+            ></div>
+
+        </div>
 
     </div>
 
