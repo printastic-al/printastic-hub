@@ -54,7 +54,7 @@ body{
 
 .container{
 
-    max-width:1500px;
+    max-width:100%;
     margin:auto;
 
 }
@@ -114,9 +114,11 @@ body{
     display:grid;
 
     grid-template-columns:
-repeat(auto-fit,minmax(520px,1fr));
+    repeat(auto-fill,minmax(420px,420px));
 
-    gap:24px;
+    gap:20px;
+
+    align-items:start;
 
 }
 
@@ -129,7 +131,9 @@ repeat(auto-fit,minmax(520px,1fr));
     border-radius:30px;
 
     padding:18px;
-
+    
+height:max-content;
+    
     backdrop-filter:blur(20px);
 
     box-shadow:
