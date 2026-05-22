@@ -1261,38 +1261,155 @@ ficheirosInput.addEventListener("change",()=>{
 
     let html = "";
 
-    for(let file of ficheirosInput.files){
-const extensao = file.name
-.toLowerCase()
-.split(".")
-.pop();
+    Array.from(ficheirosInput.files).forEach((file,index)=>{
 
-if(
-    extensao !== "png" &&
-    extensao !== "pdf"
-){
+        const extensao = file.name
+        .toLowerCase()
+        .split(".")
+        .pop();
 
-    alert(
-        "Apenas são permitidos ficheiros PNG e PDF."
-    );
+        if(
+            extensao !== "png" &&
+            extensao !== "pdf"
+        ){
 
-    ficheirosInput.value = "";
+            alert(
+                "Apenas são permitidos ficheiros PNG e PDF."
+            );
 
-    return;
+            ficheirosInput.value = "";
 
-}
+            return;
+
+        }
+
+        const preview = extensao === "png"
+        ? URL.createObjectURL(file)
+        : null;
+
         html += `
-            <div style="
-                padding:10px;
-                margin-top:10px;
-                background:rgba(255,255,255,0.05);
-                border-radius:12px;
-            ">
-                📄 ${file.name}
+
+        <div class="fileItem">
+
+            <div class="filePreview">
+
+                ${extensao === "png"
+
+                ? `
+
+                <img src="${preview}">
+
+                `
+
+                : `
+
+                <div class="pdfPreview">
+                    📕
+                </div>
+
+                `}
+
             </div>
+
+            <div class="fileContent">
+
+                <div class="fileTop">
+
+                    <div class="fileName">
+                        ${file.name}
+                    </div>
+
+                    <div class="fileBadge">
+
+                        ${extensao.toUpperCase()}
+
+                    </div>
+
+                </div>
+
+                <div class="grid">
+
+                    <div class="field">
+
+                        <label>
+                            Largura Final (cm)
+                        </label>
+
+                        <input
+                            type="number"
+                            placeholder="Ex: 28"
+                            class="larguraInput"
+                            data-index="${index}"
+                        >
+
+                        <div class="fileHint">
+
+                            A proporção original da arte será mantida automaticamente.
+
+                        </div>
+
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Quantidade
+                        </label>
+
+                        <div class="qtyWrap">
+
+                            <button
+                                type="button"
+                                class="qtyBtn"
+                                onclick="alterarQtd(${index},-1)"
+                            >
+                                −
+                            </button>
+
+                            <input
+                                type="number"
+                                value="1"
+                                min="1"
+                                class="qtyInput quantidadeInput"
+                                data-index="${index}"
+                            >
+
+                            <button
+                                type="button"
+                                class="qtyBtn"
+                                onclick="alterarQtd(${index},1)"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="field full">
+
+                        <label>
+                            Observações deste ficheiro
+                        </label>
+
+                        <textarea
+                            class="obsFicheiroInput"
+                            data-index="${index}"
+                            placeholder="Ex: frente camisola"
+                            style="min-height:90px;"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
         `;
 
-    }
+    });
 
     if(html===""){
 
@@ -1300,7 +1417,9 @@ if(
 
     }
 
-    document.getElementById("listaFicheiros").innerHTML = html;
+    document.getElementById(
+        "listaFicheiros"
+    ).innerHTML = html;
 
 });
 form.addEventListener("submit", async (e)=>{
