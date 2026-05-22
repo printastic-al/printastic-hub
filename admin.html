@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Printastic Admin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    --bg:#050816;
+    --panel:rgba(15,23,42,0.72);
+    --border:rgba(255,255,255,0.08);
+
+    --text:#ffffff;
+    --muted:#94a3b8;
+
+    --blue:#6366f1;
+    --purple:#8b5cf6;
+    --cyan:#06b6d4;
+
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:
+    radial-gradient(circle at top left,#312e81 0%,transparent 30%),
+    radial-gradient(circle at bottom right,#0f766e 0%,transparent 30%),
+    #050816;
+
+    color:white;
+
+    min-height:100vh;
+
+    padding:30px;
+
+}
+
+.container{
+
+    max-width:1500px;
+    margin:auto;
+
+}
+
+.topbar{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:40px;
+
+    gap:20px;
+    flex-wrap:wrap;
+
+}
+
+.logo{
+
+    font-size:42px;
+    font-weight:900;
+
+    background:
+    linear-gradient(
+        90deg,
+        white,
+        #818cf8,
+        #06b6d4
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+}
+
+.search{
+
+    width:340px;
+    max-width:100%;
+
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:20px;
+
+    padding:16px 20px;
+
+    color:white;
+
+    outline:none;
+
+}
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(360px,1fr));
+
+    gap:24px;
+
+}
+
+.card{
+
+    background:var(--panel);
+
+    border:1px solid var(--border);
+
+    border-radius:30px;
+
+    padding:26px;
+
+    backdrop-filter:blur(20px);
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,0.35);
+
+}
+
+.cardTop{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+.pedidoID{
+
+    font-size:24px;
+    font-weight:900;
+
+}
+
+.estado{
+
+    padding:10px 16px;
+
+    border-radius:999px;
+
+    font-size:13px;
+    font-weight:700;
+
+    background:rgba(99,102,241,0.15);
+
+    border:1px solid rgba(99,102,241,0.25);
+
+}
+
+.info{
+
+    display:grid;
+    gap:12px;
+
+    margin-bottom:24px;
+
+}
+
+.infoLine{
+
+    color:#dbeafe;
+
+    line-height:1.6;
+
+}
+
+.label{
+
+    color:#94a3b8;
+    font-weight:700;
+
+}
+
+.actions{
+
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+
+}
+
+.btn{
+
+    flex:1;
+
+    border:none;
+
+    padding:16px;
+
+    border-radius:18px;
+
+    cursor:pointer;
+
+    font-weight:800;
+
+    color:white;
+
+    background:
+    linear-gradient(
+        90deg,
+        #6366f1,
+        #8b5cf6
+    );
+
+}
+
+.btn.secondary{
+
+    background:
+    rgba(255,255,255,0.06);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+}
+
+.uploads{
+
+    margin-top:18px;
+
+    background:rgba(255,255,255,0.04);
+
+    border-radius:18px;
+
+    padding:18px;
+
+    max-height:240px;
+
+    overflow:auto;
+
+    white-space:pre-wrap;
+
+    font-size:13px;
+
+    line-height:1.7;
+
+    color:#cbd5e1;
+
+}
+
+.empty{
+
+    text-align:center;
+    color:#94a3b8;
+
+    padding:80px 20px;
+
+    font-size:20px;
+
+}
+
+@media(max-width:700px){
+
+    body{
+
+        padding:18px;
+
+    }
+
+    .logo{
+
+        font-size:30px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+
+        <div class="logo">
+            PRINTASTIC ADMIN
+        </div>
+
+        <input
+            type="text"
+            class="search"
+            id="searchInput"
+            placeholder="Pesquisar cliente ou pedido..."
+        >
+
+    </div>
+
+    <div
+        class="grid"
+        id="pedidosGrid"
+    ></div>
+
+</div>
+
+<script>
+
+const API_URL =
+"COLOCA_AQUI_O_TEU_URL_APPS_SCRIPT";
+
+let pedidos = [];
+
+async function carregarPedidos(){
+
+    const response = await fetch(
+
+        API_URL +
+        "?action=listarPedidos"
+
+    );
+
+    pedidos = await response.json();
+
+    renderPedidos();
+
+}
+
+function renderPedidos(){
+
+    const pesquisa =
+        document.getElementById(
+            "searchInput"
+        ).value.toLowerCase();
+
+    let html = "";
+
+    pedidos
+    .reverse()
+    .forEach(pedido => {
+
+        const texto =
+        JSON.stringify(pedido)
+        .toLowerCase();
+
+        if(
+            !texto.includes(pesquisa)
+        ){
+
+            return;
+
+        }
+
+        html += `
+
+        <div class="card">
+
+            <div class="cardTop">
+
+                <div class="pedidoID">
+                    ${pedido.pedidoID}
+                </div>
+
+                <div class="estado">
+                    ${pedido.estado}
+                </div>
+
+            </div>
+
+            <div class="info">
+
+                <div class="infoLine">
+                    <span class="label">
+                        Cliente:
+                    </span>
+                    ${pedido.nome}
+                </div>
+
+                <div class="infoLine">
+                    <span class="label">
+                        Telemóvel:
+                    </span>
+                    ${pedido.telemovel}
+                </div>
+
+                <div class="infoLine">
+                    <span class="label">
+                        Tipo:
+                    </span>
+                    ${pedido.tipoPedido}
+                </div>
+
+                <div class="infoLine">
+                    <span class="label">
+                        Email:
+                    </span>
+                    ${pedido.email}
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <button
+                    class="btn"
+                    onclick="abrirCanva('${pedido.canvaLink}')"
+                >
+                    🎨 Canva
+                </button>
+
+                <button
+                    class="btn secondary"
+                    onclick="toggleUploads(this)"
+                >
+                    ☁️ Uploads
+                </button>
+
+            </div>
+
+            <div
+                class="uploads"
+                style="display:none;"
+            >
+
+${pedido.uploads || "Sem uploads"}
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    if(html === ""){
+
+        html = `
+        <div class="empty">
+            Nenhum pedido encontrado.
+        </div>
+        `;
+
+    }
+
+    document.getElementById(
+        "pedidosGrid"
+    ).innerHTML = html;
+
+}
+
+function abrirCanva(link){
+
+    if(!link){
+
+        alert(
+            "Este pedido não tem link Canva."
+        );
+
+        return;
+
+    }
+
+    window.open(
+        link,
+        "_blank"
+    );
+
+}
+
+function toggleUploads(btn){
+
+    const box =
+    btn.parentElement.nextElementSibling;
+
+    if(
+        box.style.display === "none"
+    ){
+
+        box.style.display = "block";
+
+    }else{
+
+        box.style.display = "none";
+
+    }
+
+}
+
+document.getElementById(
+    "searchInput"
+).addEventListener(
+    "input",
+    renderPedidos
+);
+
+carregarPedidos();
+
+</script>
+
+</body>
+</html>
