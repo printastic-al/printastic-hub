@@ -573,6 +573,21 @@ for(let file of ficheirosInput.files){
     );
 
 }
+            await fetch(API_URL,{
+
+    method:"POST",
+
+    body:JSON.stringify({
+
+        action:"guardarUploads",
+
+        pedidoID:result.pedidoID,
+
+        uploads:uploads
+
+    })
+
+});
             document.getElementById("successBox").style.display="block";
 
             document.getElementById("successBox").innerHTML=`
