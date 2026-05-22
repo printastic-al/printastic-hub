@@ -428,7 +428,36 @@ button:hover{
 const API_URL = "https://script.google.com/macros/s/AKfycbz1pSn2pa3bUHKZrlWBL1_x0ApuPRsYRbtNOBSoV_3S9mOr9Ap4Vb-ILRcs4XFwcT2E/exec";
 
 const form = document.getElementById("pedidoForm");
+const ficheirosInput = document.getElementById("ficheiros");
 
+ficheirosInput.addEventListener("change",()=>{
+
+    let html = "";
+
+    for(let file of ficheirosInput.files){
+
+        html += `
+            <div style="
+                padding:10px;
+                margin-top:10px;
+                background:rgba(255,255,255,0.05);
+                border-radius:12px;
+            ">
+                📄 ${file.name}
+            </div>
+        `;
+
+    }
+
+    if(html===""){
+
+        html = "Nenhum ficheiro selecionado.";
+
+    }
+
+    document.getElementById("listaFicheiros").innerHTML = html;
+
+});
 form.addEventListener("submit", async (e)=>{
 
     e.preventDefault();
