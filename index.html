@@ -485,29 +485,7 @@ form.addEventListener("submit", async (e)=>{
 
     btn.innerHTML = "A enviar pedido...";
     btn.disabled = true;
-const ficheiros = [];
 
-for(let file of ficheirosInput.files){
-
-    let ficheiroFinal = file;
-
-if(file.type === "image/png"){
-
-    ficheiroFinal = await compressImage(file);
-
-}
-
-const base64 = await toBase64(ficheiroFinal);
-
-    ficheiros.push({
-
-        nome:file.name,
-        mimeType:file.type,
-        base64:base64.split(",")[1]
-
-    });
-
-}
     const data = {
 
         nome:document.getElementById("nome").value,
@@ -520,7 +498,6 @@ const base64 = await toBase64(ficheiroFinal);
         observacoes:document.getElementById("observacoes").value,
         canvaLink:document.getElementById("canvaLink").value,
 
-ficheiros:ficheiros
 
     };
 
@@ -537,7 +514,51 @@ ficheiros:ficheiros
         const result = await response.json();
 
         if(result.success){
+const folderId = result.folderId;
 
+// ========================================
+// UPLOADS SEPARADOS
+// ========================================
+
+for(let file of ficheirosInput.files){
+
+    let ficheiroFinal = file;
+
+    // ========================================
+    // COMPRESSÃO PNG
+    // ========================================
+
+    if(file.type === "image/png"){
+
+        ficheiroFinal =
+            await compressImage(file);
+
+    }
+
+    const base64 =
+        await toBase64(ficheiroFinal);
+
+    await fetch(API_URL,{
+
+        method:"POST",
+
+        body:JSON.stringify({
+
+            action:"uploadFile",
+
+            folderId:folderId,
+
+            nome:file.name,
+
+            mimeType:file.type,
+
+            base64:base64.split(",")[1]
+
+        })
+
+    });
+
+}
             document.getElementById("successBox").style.display="block";
 
             document.getElementById("successBox").innerHTML=`
