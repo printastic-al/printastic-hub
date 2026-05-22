@@ -1256,12 +1256,14 @@ const CLOUD_NAME = "dtfayyibi";
 const UPLOAD_PRESET = "printastic_uploads";
 const form = document.getElementById("pedidoForm");
 const ficheirosInput = document.getElementById("ficheiros");
-
+let ficheirosSelecionados = [];
 ficheirosInput.addEventListener("change",()=>{
 
-    let html = "";
+    const novosFicheiros = Array.from(
+        ficheirosInput.files
+    );
 
-    Array.from(ficheirosInput.files).forEach((file,index)=>{
+    novosFicheiros.forEach(file => {
 
         const extensao = file.name
         .toLowerCase()
@@ -1277,11 +1279,41 @@ ficheirosInput.addEventListener("change",()=>{
                 "Apenas são permitidos ficheiros PNG e PDF."
             );
 
-            ficheirosInput.value = "";
-
             return;
 
         }
+
+        ficheirosSelecionados.push(file);
+
+    });
+
+    renderFicheiros();
+
+    ficheirosInput.value = "";
+
+});
+
+    if(html===""){
+
+        html = "Nenhum ficheiro selecionado.";
+
+    }
+
+    document.getElementById(
+        "listaFicheiros"
+    ).innerHTML = html;
+
+});
+function renderFicheiros(){
+
+    let html = "";
+
+    ficheirosSelecionados.forEach((file,index)=>{
+
+        const extensao = file.name
+        .toLowerCase()
+        .split(".")
+        .pop();
 
         const preview = extensao === "png"
         ? URL.createObjectURL(file)
@@ -1290,6 +1322,27 @@ ficheirosInput.addEventListener("change",()=>{
         html += `
 
         <div class="fileItem">
+
+            <button
+                type="button"
+                onclick="removerFicheiro(${index})"
+                style="
+                    position:absolute;
+                    top:14px;
+                    right:14px;
+                    width:38px;
+                    height:38px;
+                    border:none;
+                    border-radius:12px;
+                    background:rgba(239,68,68,0.16);
+                    color:#fca5a5;
+                    cursor:pointer;
+                    font-size:18px;
+                    font-weight:800;
+                "
+            >
+                ✕
+            </button>
 
             <div class="filePreview">
 
@@ -1411,7 +1464,7 @@ ficheirosInput.addEventListener("change",()=>{
 
     });
 
-    if(html===""){
+    if(html === ""){
 
         html = "Nenhum ficheiro selecionado.";
 
@@ -1421,7 +1474,7 @@ ficheirosInput.addEventListener("change",()=>{
         "listaFicheiros"
     ).innerHTML = html;
 
-});
+}    
 form.addEventListener("submit", async (e)=>{
 
     e.preventDefault();
@@ -1467,7 +1520,7 @@ document.getElementById(
 "A enviar ficheiros...";            
 const uploads = [];
 
-for(let file of ficheirosInput.files){
+for(let file of ficheirosSelecionados){
 
     let ficheiroFinal = file;
 
@@ -1726,6 +1779,13 @@ async function compressImage(file){
     });
 
 }   
+function removerFicheiro(index){
+
+    ficheirosSelecionados.splice(index,1);
+
+    renderFicheiros();
+
+}    
 function alterarQtd(index,valor){
 
     const input = document.querySelector(
