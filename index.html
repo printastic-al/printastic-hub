@@ -527,29 +527,46 @@ textarea{
 
 .fileItem{
 
-    background:rgba(255,255,255,0.05);
+    background:
+    linear-gradient(
+        180deg,
+        rgba(255,255,255,0.06),
+        rgba(255,255,255,0.03)
+    );
 
     border:1px solid rgba(255,255,255,0.08);
 
-    border-radius:18px;
+    border-radius:28px;
 
-    padding:14px 18px;
+    padding:22px;
 
     display:flex;
 
-    align-items:center;
+    gap:22px;
 
-    gap:14px;
+    align-items:flex-start;
+
+    position:relative;
+
+    overflow:hidden;
 
 }
 
-.fileIcon{
+.filePreview{
 
-    width:44px;
+    width:120px;
 
-    height:44px;
+    min-width:120px;
 
-    border-radius:14px;
+    height:120px;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    background:rgba(255,255,255,0.04);
+
+    border:1px solid rgba(255,255,255,0.08);
 
     display:flex;
 
@@ -557,12 +574,117 @@ textarea{
 
     justify-content:center;
 
-    background:
-    linear-gradient(
-        135deg,
-        var(--purple),
-        var(--blue)
-    );
+}
+
+.filePreview img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.pdfPreview{
+
+    font-size:54px;
+
+}
+
+.fileContent{
+
+    flex:1;
+
+}
+
+.fileTop{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    margin-bottom:18px;
+
+    flex-wrap:wrap;
+
+}
+
+.fileName{
+
+    font-size:18px;
+
+    font-weight:800;
+
+}
+
+.fileBadge{
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    background:rgba(99,102,241,0.16);
+
+    border:1px solid rgba(99,102,241,0.25);
+
+    color:#c7d2fe;
+
+}
+
+.fileHint{
+
+    font-size:13px;
+
+    color:#94a3b8;
+
+    margin-top:8px;
+
+    line-height:1.6;
+
+}
+
+.qtyWrap{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.qtyBtn{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.08);
+
+    color:white;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+}
+
+.qtyInput{
+
+    text-align:center;
 
 }
 
@@ -757,7 +879,19 @@ textarea{
         padding:26px;
 
     }
+.fileItem{
 
+    flex-direction:column;
+
+}
+
+.filePreview{
+
+    width:100%;
+
+    height:220px;
+
+}
 }
 
 </style>
@@ -1471,6 +1605,27 @@ async function compressImage(file){
         };
 
     });
+
+}   
+function alterarQtd(index,valor){
+
+    const input = document.querySelector(
+
+        `.quantidadeInput[data-index="${index}"]`
+
+    );
+
+    let atual = Number(input.value);
+
+    atual += valor;
+
+    if(atual < 1){
+
+        atual = 1;
+
+    }
+
+    input.value = atual;
 
 }    
 </script>
