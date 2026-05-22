@@ -830,8 +830,13 @@ async function guardarEstado(pedidoID){
     });
 
     alert(
-        "Estado atualizado."
-    );
+    "Estado atualizado."
+);
+
+carregarPedidos();
+
+}
+
 function sairAdmin(){
 
     sessionStorage.removeItem(
@@ -842,9 +847,7 @@ function sairAdmin(){
     "index.html";
 
 }
-    carregarPedidos();
 
-}
 carregarPedidos();
 
 </script>
