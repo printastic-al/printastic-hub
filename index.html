@@ -589,7 +589,98 @@ textarea{
     transform:translateY(-3px);
 
 }
+.loadingOverlay{
 
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(2,6,23,0.82);
+
+    backdrop-filter:blur(12px);
+
+    z-index:99999;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+}
+
+.loadingCard{
+
+    width:100%;
+
+    max-width:420px;
+
+    background:rgba(15,23,42,0.96);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:34px;
+
+    padding:50px 35px;
+
+    text-align:center;
+
+    box-shadow:
+    0 20px 80px rgba(0,0,0,0.45);
+
+}
+
+.loaderRing{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:50%;
+
+    margin:auto;
+
+    margin-bottom:30px;
+
+    border:6px solid rgba(255,255,255,0.08);
+
+    border-top:6px solid #8b5cf6;
+
+    animation:spin 1s linear infinite;
+
+}
+
+.loadingTitle{
+
+    font-size:30px;
+
+    font-weight:800;
+
+    margin-bottom:14px;
+
+}
+
+.loadingText{
+
+    color:var(--muted);
+
+    font-size:17px;
+
+    line-height:1.7;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
 .success{
 
     margin-top:30px;
@@ -974,7 +1065,29 @@ textarea{
                 class="success"
                 id="successBox"
             ></div>
+<div 
+    class="loadingOverlay"
+    id="loadingOverlay"
+>
 
+    <div class="loadingCard">
+
+        <div class="loaderRing"></div>
+
+        <div class="loadingTitle">
+            A processar pedido
+        </div>
+
+        <div 
+            class="loadingText"
+            id="loadingText"
+        >
+            A preparar ficheiros...
+        </div>
+
+    </div>
+
+</div>
         </div>
 
     </div>
@@ -1042,8 +1155,11 @@ form.addEventListener("submit", async (e)=>{
 
     const btn = document.querySelector("button");
 
-    btn.innerHTML = "A enviar pedido...";
     btn.disabled = true;
+
+document.getElementById(
+    "loadingOverlay"
+).style.display = "flex";
 
     const data = {
 
@@ -1072,6 +1188,10 @@ form.addEventListener("submit", async (e)=>{
         const result = await response.json();
 
         if(result.success){
+document.getElementById(
+    "loadingText"
+).innerHTML =
+"A enviar ficheiros...";            
 const uploads = [];
 
 for(let file of ficheirosInput.files){
@@ -1129,6 +1249,10 @@ for(let file of ficheirosInput.files){
     );
 
 }
+            document.getElementById(
+    "loadingText"
+).innerHTML =
+"A finalizar pedido...";
             await fetch(API_URL,{
 
     method:"POST",
@@ -1144,19 +1268,86 @@ for(let file of ficheirosInput.files){
     })
 
 });
-            document.getElementById("successBox").style.display="block";
+            document.getElementById(
+    "loadingOverlay"
+).style.display = "none";
 
-            document.getElementById("successBox").innerHTML=`
+document.querySelector(
+    ".mainCard"
+).innerHTML = `
 
-                ✅ Pedido enviado com sucesso!<br><br>
+<div style="
+    text-align:center;
+    padding:40px 10px;
+">
 
-                <strong>${result.pedidoID}</strong><br><br>
+    <div style="
+        width:140px;
+        height:140px;
+        margin:auto;
+        margin-bottom:35px;
+        border-radius:50%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:70px;
+        background:
+        linear-gradient(
+            135deg,
+            #22c55e,
+            #14b8a6
+        );
+        box-shadow:
+        0 20px 60px rgba(34,197,94,0.35);
+    ">
+        🚀
+    </div>
 
-                A equipa da Printastic irá analisar o pedido.
+    <div style="
+        font-size:48px;
+        font-weight:900;
+        margin-bottom:18px;
+    ">
+        Pedido Recebido
+    </div>
 
-            `;
+    <div style="
+        max-width:700px;
+        margin:auto;
+        color:#94a3b8;
+        line-height:1.9;
+        font-size:19px;
+        margin-bottom:40px;
+    ">
 
-            form.reset();
+        Os teus ficheiros foram enviados com sucesso
+        para a equipa Printastic.
+
+        <br><br>
+
+        Vamos analisar as artes e entrar em contacto contigo.
+
+    </div>
+
+    <div style="
+        display:inline-flex;
+        align-items:center;
+        gap:14px;
+        background:rgba(255,255,255,0.05);
+        border:1px solid rgba(255,255,255,0.08);
+        padding:20px 28px;
+        border-radius:24px;
+        font-size:22px;
+        font-weight:800;
+    ">
+
+        📦 ${result.pedidoID}
+
+    </div>
+
+</div>
+
+`;
 
         }else{
 
