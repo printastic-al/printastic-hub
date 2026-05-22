@@ -550,8 +550,16 @@ function renderPedidos(){
     let html = "";
 
     pedidos
-    .reverse()
-    .forEach(pedido => {
+.reverse()
+.forEach(pedido => {
+
+    if(
+        pedido.estado === "Concluído"
+    ){
+
+        return;
+
+    }
 
         const texto =
         JSON.stringify(pedido)
@@ -654,6 +662,11 @@ Estado
 </label>
 
 <select
+
+    ${pedido.estado === "Concluído"
+    ? "disabled"
+    : ""}
+
     class="estadoSelect"
     data-id="${pedido.pedidoID}"
     style="
@@ -696,6 +709,11 @@ Observações Internas
 </label>
 
 <textarea
+
+    ${pedido.estado === "Concluído"
+    ? "disabled"
+    : ""}
+
     class="obsInternas"
     data-id="${pedido.pedidoID}"
     style="
@@ -711,6 +729,11 @@ Observações Internas
 >${pedido.observacoesInternas || ""}</textarea>
 
 <button
+
+    ${pedido.estado === "Concluído"
+    ? "disabled"
+    : ""}
+
     onclick="guardarEstado('${pedido.pedidoID}')"
     style="
         width:100%;
