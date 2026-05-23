@@ -888,11 +888,21 @@ function guardarEstado(pedidoID){
 }
 function enviarWhatsapp(pedidoID){
 
+    alert("A abrir WhatsApp...");
+
     const pedido = pedidos.find(
-        p => p.pedidoID === pedidoID
+        p => String(p.pedidoID) === String(pedidoID)
     );
 
-    if(!pedido || !pedido.telemovel){
+    if(!pedido){
+
+        alert("Pedido não encontrado.");
+
+        return;
+
+    }
+
+    if(!pedido.telemovel){
 
         alert("Este pedido não tem número de telemóvel.");
 
@@ -900,8 +910,18 @@ function enviarWhatsapp(pedidoID){
 
     }
 
-    const telefone =
-        "351" + pedido.telemovel.replace(/\D/g,"");
+    let telefone = String(pedido.telemovel)
+    .replace(/\D/g,"");
+
+    if(telefone.startsWith("351")){
+
+        telefone = telefone;
+
+    }else{
+
+        telefone = "351" + telefone;
+
+    }
 
     const mensagem =
         `Olá ${pedido.nome}, o teu pedido ${pedidoID} está concluído. Já podes combinar connosco a entrega/levantamento. Obrigado!`;
@@ -912,12 +932,9 @@ function enviarWhatsapp(pedidoID){
         "?text=" +
         encodeURIComponent(mensagem);
 
-    window.open(
-        url,
-        "_blank"
-    );
+    window.location.href = url;
 
-}    
+}   
 
 function sairAdmin(){
 
