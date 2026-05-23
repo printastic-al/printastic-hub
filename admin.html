@@ -823,7 +823,7 @@ document.getElementById(
     "input",
     renderPedidos
 );
-async function guardarEstado(pedidoID){
+function guardarEstado(pedidoID){
 
     const estado = document.querySelector(
         `.estadoSelect[data-id="${pedidoID}"]`
@@ -833,38 +833,11 @@ async function guardarEstado(pedidoID){
         `.obsInternas[data-id="${pedidoID}"]`
     ).value;
 
-    let janelaWhatsapp = null;
+    const pedido = pedidos.find(
+        p => p.pedidoID === pedidoID
+    );
 
-    if(estado === "Concluído"){
-
-        const pedido = pedidos.find(
-            p => p.pedidoID === pedidoID
-        );
-
-        if(pedido && pedido.telemovel){
-
-            const telefone =
-                "351" + pedido.telemovel.replace(/\D/g,"");
-
-            const mensagem =
-                `Olá ${pedido.nome}, o teu pedido ${pedidoID} está concluído. A equipa Printastic irá entrar em contacto contigo para combinar a entrega. Obrigado!`;
-
-            const url =
-                "https://wa.me/" +
-                telefone +
-                "?text=" +
-                encodeURIComponent(mensagem);
-
-            janelaWhatsapp = window.open(
-                url,
-                "_blank"
-            );
-
-        }
-
-    }
-
-    await fetch(API_URL,{
+    fetch(API_URL,{
 
         method:"POST",
 
@@ -872,21 +845,47 @@ async function guardarEstado(pedidoID){
 
             action:"atualizarEstado",
 
-            pedidoID,
+            pedidoID:pedidoID,
 
-            estado,
+            estado:estado,
 
-            observacoesInternas
+            observacoesInternas:observacoesInternas
 
         })
 
+    })
+    .then(()=>{
+
+        if(estado === "Concluído" && pedido && pedido.telemovel){
+
+            const telefone = "351" + pedido.telemovel.replace(/\D/g,"");
+
+            const mensagem =
+                `Olá ${pedido.nome}, o teu pedido ${pedidoID} está concluído. Já podes combinar connosco a entrega/levantamento. Obrigado!`;
+
+            const url =
+                "https://wa.me/" +
+                telefone +
+                "?text=" +
+                encodeURIComponent(mensagem);
+
+            window.open(
+                url,
+                "_blank"
+            );
+
+        }
+
+        alert("Estado atualizado.");
+
+        carregarPedidos();
+
+    })
+    .catch(()=>{
+
+        alert("Erro ao atualizar estado.");
+
     });
-
-    alert(
-        "Estado atualizado."
-    );
-
-    carregarPedidos();
 
 }
 
