@@ -855,9 +855,39 @@ async function guardarEstado(pedidoID){
 
     });
 
-    alert(
+ alert(
     "Estado atualizado."
 );
+
+if(estado === "Concluído"){
+
+    const pedido = pedidos.find(
+        p => p.pedidoID === pedidoID
+    );
+
+    if(pedido && pedido.telemovel){
+
+        const telefone =
+            "351" + pedido.telemovel
+            .replace(/\D/g,"");
+
+        const mensagem =
+            `Olá ${pedido.nome}, o teu pedido ${pedidoID} está concluído. A equipa Printastic irá entrar em contacto contigo para combinar a entrega. Obrigado!`;
+
+        const url =
+            "https://wa.me/" +
+            telefone +
+            "?text=" +
+            encodeURIComponent(mensagem);
+
+        window.open(
+            url,
+            "_blank"
+        );
+
+    }
+
+}
 
 carregarPedidos();
 
