@@ -826,16 +826,43 @@ document.getElementById(
 async function guardarEstado(pedidoID){
 
     const estado = document.querySelector(
-
         `.estadoSelect[data-id="${pedidoID}"]`
-
     ).value;
 
     const observacoesInternas = document.querySelector(
-
         `.obsInternas[data-id="${pedidoID}"]`
-
     ).value;
+
+    let janelaWhatsapp = null;
+
+    if(estado === "Concluído"){
+
+        const pedido = pedidos.find(
+            p => p.pedidoID === pedidoID
+        );
+
+        if(pedido && pedido.telemovel){
+
+            const telefone =
+                "351" + pedido.telemovel.replace(/\D/g,"");
+
+            const mensagem =
+                `Olá ${pedido.nome}, o teu pedido ${pedidoID} está concluído. A equipa Printastic irá entrar em contacto contigo para combinar a entrega. Obrigado!`;
+
+            const url =
+                "https://wa.me/" +
+                telefone +
+                "?text=" +
+                encodeURIComponent(mensagem);
+
+            janelaWhatsapp = window.open(
+                url,
+                "_blank"
+            );
+
+        }
+
+    }
 
     await fetch(API_URL,{
 
@@ -855,41 +882,11 @@ async function guardarEstado(pedidoID){
 
     });
 
- alert(
-    "Estado atualizado."
-);
-
-if(estado === "Concluído"){
-
-    const pedido = pedidos.find(
-        p => p.pedidoID === pedidoID
+    alert(
+        "Estado atualizado."
     );
 
-    if(pedido && pedido.telemovel){
-
-        const telefone =
-            "351" + pedido.telemovel
-            .replace(/\D/g,"");
-
-        const mensagem =
-            `Olá ${pedido.nome}, o teu pedido ${pedidoID} está concluído. A equipa Printastic irá entrar em contacto contigo para combinar a entrega. Obrigado!`;
-
-        const url =
-            "https://wa.me/" +
-            telefone +
-            "?text=" +
-            encodeURIComponent(mensagem);
-
-        window.open(
-            url,
-            "_blank"
-        );
-
-    }
-
-}
-
-carregarPedidos();
+    carregarPedidos();
 
 }
 
