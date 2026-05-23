@@ -755,7 +755,29 @@ Observações Internas
     💾 Guardar Estado
 
 </button>
+<button
+    onclick="enviarWhatsapp('${pedido.pedidoID}')"
+    style="
+        width:100%;
+        margin-top:10px;
+        border:none;
+        padding:16px;
+        border-radius:16px;
+        cursor:pointer;
+        font-weight:800;
+        color:white;
+        background:
+        linear-gradient(
+            90deg,
+            #22c55e,
+            #14b8a6
+        );
+    "
+>
 
+    💬 Enviar WhatsApp
+
+</button>
 </div>
         </div>
 
@@ -833,10 +855,6 @@ function guardarEstado(pedidoID){
         `.obsInternas[data-id="${pedidoID}"]`
     ).value;
 
-    const pedido = pedidos.find(
-        p => p.pedidoID === pedidoID
-    );
-
     fetch(API_URL,{
 
         method:"POST",
@@ -856,26 +874,6 @@ function guardarEstado(pedidoID){
     })
     .then(()=>{
 
-        if(estado === "Concluído" && pedido && pedido.telemovel){
-
-            const telefone = "351" + pedido.telemovel.replace(/\D/g,"");
-
-            const mensagem =
-                `Olá ${pedido.nome}, o teu pedido ${pedidoID} está concluído. Já podes combinar connosco a entrega/levantamento. Obrigado!`;
-
-            const url =
-                "https://wa.me/" +
-                telefone +
-                "?text=" +
-                encodeURIComponent(mensagem);
-
-            window.open(
-                url,
-                "_blank"
-            );
-
-        }
-
         alert("Estado atualizado.");
 
         carregarPedidos();
@@ -888,6 +886,38 @@ function guardarEstado(pedidoID){
     });
 
 }
+function enviarWhatsapp(pedidoID){
+
+    const pedido = pedidos.find(
+        p => p.pedidoID === pedidoID
+    );
+
+    if(!pedido || !pedido.telemovel){
+
+        alert("Este pedido não tem número de telemóvel.");
+
+        return;
+
+    }
+
+    const telefone =
+        "351" + pedido.telemovel.replace(/\D/g,"");
+
+    const mensagem =
+        `Olá ${pedido.nome}, o teu pedido ${pedidoID} está concluído. Já podes combinar connosco a entrega/levantamento. Obrigado!`;
+
+    const url =
+        "https://wa.me/" +
+        telefone +
+        "?text=" +
+        encodeURIComponent(mensagem);
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}    
 
 function sairAdmin(){
 
