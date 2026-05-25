@@ -1097,13 +1097,19 @@ body{
 
 <div class="etiqueta">
 
-    <div class="logo">
-        PRINTASTIC_AL
-    </div>
+    <div style="
+    margin-bottom:18px;
+">
 
-    <div class="slogan">
-        Se imaginas, criamos!
-    </div>
+    <img
+        src='https://i.imgur.com/7lFQFQp.png'
+        style="
+            width:220px;
+            max-width:100%;
+        "
+    >
+
+</div>
 
     <div class="id">
         ${pedido.pedidoID}
@@ -1127,9 +1133,9 @@ body{
         </div>
 
         <div>
-            <span class="label">Estado:</span>
-            ${pedido.estado || ""}
-        </div>
+    <span class="label">Conteúdo:</span>
+    ${pedido.observacoes || pedido.tipoPedido || ""}
+</div>
 
     </div>
 
