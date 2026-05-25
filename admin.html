@@ -591,12 +591,23 @@ function renderPedidos(){
 
             <div class="info">
 
-                <div class="infoLine">
-                    <span class="label">
-                        Cliente:
-                    </span>
-                    ${pedido.nome}
-                </div>
+    <div class="infoLine">
+        <span class="label">
+            Data:
+        </span>
+
+        ${
+            new Date(pedido.data)
+            .toLocaleString("pt-PT")
+        }
+    </div>
+
+    <div class="infoLine">
+        <span class="label">
+            Cliente:
+        </span>
+        ${pedido.nome}
+    </div>
 
                 <div class="infoLine">
                     <span class="label">
