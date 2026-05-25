@@ -789,6 +789,29 @@ Observações Internas
     💬 Enviar WhatsApp
 
 </button>
+<button
+    onclick="gerarEtiqueta('${pedido.pedidoID}')"
+    style="
+        width:100%;
+        margin-top:10px;
+        border:none;
+        padding:16px;
+        border-radius:16px;
+        cursor:pointer;
+        font-weight:800;
+        color:white;
+        background:
+        linear-gradient(
+            90deg,
+            #f59e0b,
+            #f97316
+        );
+    "
+>
+
+    🏷️ Gerar Etiqueta
+
+</button>
 </div>
         </div>
 
@@ -946,7 +969,175 @@ function enviarWhatsapp(pedidoID){
     window.location.href = url;
 
 }   
+function gerarEtiqueta(pedidoID){
 
+    const pedido = pedidos.find(
+        p => p.pedidoID === pedidoID
+    );
+
+    if(!pedido){
+
+        alert("Pedido não encontrado.");
+
+        return;
+
+    }
+
+    const urlPedido =
+        "https://printastic-al.github.io/printastic-hub/index.html?pedido=" +
+        encodeURIComponent(pedidoID);
+
+    const qrCode =
+        "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" +
+        encodeURIComponent(urlPedido);
+
+    const janela = window.open(
+        "",
+        "_blank",
+        "width=420,height=620"
+    );
+
+    janela.document.write(`
+
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+
+<title>Etiqueta ${pedidoID}</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    margin:0;
+    padding:20px;
+    background:white;
+    color:#111;
+}
+
+.etiqueta{
+    width:360px;
+    border:2px solid #111;
+    border-radius:18px;
+    padding:20px;
+    text-align:center;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+.slogan{
+    font-size:12px;
+    margin-bottom:18px;
+}
+
+.id{
+    font-size:22px;
+    font-weight:900;
+    margin-bottom:18px;
+}
+
+.info{
+    text-align:left;
+    font-size:15px;
+    line-height:1.7;
+    margin-bottom:18px;
+}
+
+.label{
+    font-weight:bold;
+}
+
+.qr{
+    margin-top:16px;
+}
+
+.footer{
+    margin-top:14px;
+    font-size:11px;
+}
+
+@media print{
+    body{
+        padding:0;
+    }
+
+    .etiqueta{
+        page-break-inside:avoid;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="etiqueta">
+
+    <div class="logo">
+        PRINTASTIC_AL
+    </div>
+
+    <div class="slogan">
+        Se imaginas, criamos!
+    </div>
+
+    <div class="id">
+        ${pedido.pedidoID}
+    </div>
+
+    <div class="info">
+
+        <div>
+            <span class="label">Cliente:</span>
+            ${pedido.nome || ""}
+        </div>
+
+        <div>
+            <span class="label">Telemóvel:</span>
+            ${pedido.telemovel || ""}
+        </div>
+
+        <div>
+            <span class="label">Tipo:</span>
+            ${pedido.tipoPedido || ""}
+        </div>
+
+        <div>
+            <span class="label">Estado:</span>
+            ${pedido.estado || ""}
+        </div>
+
+    </div>
+
+    <div class="qr">
+        <img src="${qrCode}" width="180" height="180">
+    </div>
+
+    <div class="footer">
+        Digitaliza para abrir o Printastic HUB
+    </div>
+
+</div>
+
+<script>
+window.onload = function(){
+    window.print();
+}
+<\/script>
+
+</body>
+</html>
+
+    `);
+
+    janela.document.close();
+
+}
 function sairAdmin(){
 
     sessionStorage.removeItem(
