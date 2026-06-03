@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Consultar Pedido — Printastic</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    min-height:100vh;
+    font-family:Inter,sans-serif;
+    color:white;
+    background:
+    radial-gradient(circle at top left,#312e81 0%,transparent 30%),
+    radial-gradient(circle at bottom right,#0f766e 0%,transparent 30%),
+    #050816;
+    padding:30px 18px;
+}
+
+.container{
+    max-width:850px;
+    margin:auto;
+}
+
+.card{
+    background:rgba(15,23,42,0.78);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:34px;
+    padding:36px;
+    box-shadow:0 20px 70px rgba(0,0,0,0.4);
+    backdrop-filter:blur(18px);
+}
+
+.logo{
+    width:220px;
+    display:block;
+    margin:0 auto 28px auto;
+}
+
+.title{
+    text-align:center;
+    font-size:42px;
+    font-weight:900;
+    margin-bottom:12px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#94a3b8;
+    font-size:18px;
+    line-height:1.7;
+    margin-bottom:34px;
+}
+
+.statusBox{
+    text-align:center;
+    padding:26px;
+    border-radius:26px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    margin-bottom:28px;
+}
+
+.estado{
+    font-size:32px;
+    font-weight:900;
+    margin-top:10px;
+}
+
+.info{
+    display:grid;
+    gap:14px;
+    margin-top:26px;
+}
+
+.line{
+    padding:16px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
+    line-height:1.6;
+}
+
+.label{
+    color:#94a3b8;
+    font-weight:800;
+}
+
+.timeline{
+    margin-top:30px;
+    display:grid;
+    gap:14px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
+}
+
+.dot{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+}
+
+.done{
+    background:#22c55e;
+}
+
+.active{
+    background:#f59e0b;
+}
+
+.pending{
+    background:rgba(255,255,255,0.12);
+    color:#94a3b8;
+}
+
+.btn{
+    margin-top:30px;
+    width:100%;
+    border:none;
+    border-radius:20px;
+    padding:18px;
+    font-size:17px;
+    font-weight:900;
+    cursor:pointer;
+    color:white;
+    background:linear-gradient(90deg,#6366f1,#8b5cf6,#06b6d4);
+}
+
+.error{
+    text-align:center;
+    color:#fca5a5;
+    font-size:20px;
+    line-height:1.8;
+}
+
+@media(max-width:700px){
+    .card{padding:26px}
+    .title{font-size:32px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card" id="app">
+        A carregar pedido...
+    </div>
+</div>
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbz1pSn2pa3bUHKZrlWBL1_x0ApuPRsYRbtNOBSoV_3S9mOr9Ap4Vb-ILRcs4XFwcT2E/exec";
+
+const pedidoID = new URLSearchParams(
+    window.location.search
+).get("id");
+
+async function carregarPedido(){
+
+    if(!pedidoID){
+
+        mostrarErro("Pedido não indicado.");
+
+        return;
+
+    }
+
+    try{
+
+        const response = await fetch(
+            API_URL +
+            "?action=consultarPedido&id=" +
+            encodeURIComponent(pedidoID)
+        );
+
+        const result = await response.json();
+
+        if(!result.success){
+
+            mostrarErro("Pedido não encontrado.");
+
+            return;
+
+        }
+
+        renderPedido(result.pedido);
+
+    }catch(error){
+
+        mostrarErro("Erro ao consultar pedido.");
+
+    }
+
+}
+
+function renderPedido(pedido){
+
+    const estado = pedido.estado || "Novo";
+
+    document.getElementById("app").innerHTML = `
+
+        <img
+            src="logo-printastic-al.png"
+            class="logo"
+        >
+
+        <div class="title">
+            Pedido ${pedido.pedidoID}
+        </div>
+
+        <div class="subtitle">
+            Consulta o estado do teu pedido Printastic.
+        </div>
+
+        <div class="statusBox">
+            Estado atual
+            <div class="estado">
+                ${estadoVisual(estado)}
+            </div>
+        </div>
+
+        <div class="timeline">
+            ${step("Pedido Recebido","Novo",estado)}
+            ${step("Em Produção","Em Produção",estado)}
+            ${step("Pronto / Concluído","Concluído",estado)}
+        </div>
+
+        <div class="info">
+
+            <div class="line">
+                <span class="label">Data:</span><br>
+                ${new Date(pedido.data).toLocaleString("pt-PT")}
+            </div>
+
+            <div class="line">
+                <span class="label">Cliente:</span><br>
+                ${pedido.nome || ""}
+            </div>
+
+            <div class="line">
+                <span class="label">Tipo de Pedido:</span><br>
+                ${pedido.tipoPedido || ""}
+            </div>
+
+            <div class="line">
+                <span class="label">Observações:</span><br>
+                ${pedido.observacoes || "Sem observações."}
+            </div>
+
+        </div>
+
+        <button
+            class="btn"
+            onclick="window.location.href='index.html'"
+        >
+            Fazer Novo Pedido
+        </button>
+
+    `;
+
+}
+
+function estadoVisual(estado){
+
+    if(estado === "Concluído"){
+        return "🟢 Concluído";
+    }
+
+    if(estado === "Em Produção"){
+        return "🟡 Em Produção";
+    }
+
+    return "🔵 Pedido Recebido";
+
+}
+
+function step(texto, estadoStep, estadoAtual){
+
+    let classe = "pending";
+    let icon = "○";
+
+    if(
+        estadoAtual === estadoStep ||
+        estadoAtual === "Concluído" && estadoStep !== "Concluído" ||
+        estadoAtual === "Em Produção" && estadoStep === "Novo"
+    ){
+        classe = "done";
+        icon = "✓";
+    }
+
+    if(estadoAtual === estadoStep){
+        classe = "active";
+        icon = "●";
+    }
+
+    if(estadoAtual === "Concluído" && estadoStep === "Concluído"){
+        classe = "done";
+        icon = "✓";
+    }
+
+    return `
+        <div class="step">
+            <div class="dot ${classe}">
+                ${icon}
+            </div>
+            <div>
+                ${texto}
+            </div>
+        </div>
+    `;
+
+}
+
+function mostrarErro(msg){
+
+    document.getElementById("app").innerHTML = `
+        <div class="error">
+            ⚠️<br><br>
+            ${msg}
+        </div>
+    `;
+
+}
+
+carregarPedido();
+
+</script>
+
+</body>
+</html>
