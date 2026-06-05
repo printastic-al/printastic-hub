@@ -239,10 +239,11 @@ function renderPedido(pedido){
         </div>
 
         <div class="timeline">
-            ${step("Pedido Recebido","Novo",estado)}
-            ${step("Em Produção","Em Produção",estado)}
-            ${step("Pronto / Concluído","Concluído",estado)}
-        </div>
+    ${step("Pedido Recebido","Novo",estado)}
+    ${step("Em Revisão","Em Revisão",estado)}
+    ${step("Em Produção","Em Produção",estado)}
+    ${step("Pronto / Concluído","Concluído",estado)}
+</div>
 
         <div class="info">
 
@@ -265,7 +266,10 @@ function renderPedido(pedido){
                 <span class="label">Observações:</span><br>
                 ${pedido.observacoes || "Sem observações."}
             </div>
-
+<div class="line">
+    <span class="label">Mensagem da Printastic:</span><br>
+    ${pedido.observacoesCliente || "Sem mensagens da equipa."}
+</div>
         </div>
 
         <button
@@ -287,6 +291,10 @@ function estadoVisual(estado){
 
     if(estado === "Em Produção"){
         return "🟡 Em Produção";
+    }
+
+    if(estado === "Em Revisão"){
+        return "🟣 Em Revisão";
     }
 
     return "🔵 Pedido Recebido";
