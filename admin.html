@@ -743,6 +743,25 @@ Observações Internas
 </label>
 
 <textarea
+
+    ${pedido.estado === "Concluído"
+    ? "disabled"
+    : ""}
+
+    class="obsInternas"
+    data-id="${pedido.pedidoID}"
+    style="
+        width:100%;
+        min-height:120px;
+        margin-bottom:18px;
+        background:rgba(255,255,255,0.05);
+        border:1px solid rgba(255,255,255,0.08);
+        border-radius:16px;
+        padding:16px;
+        color:white;
+    "
+>${pedido.observacoesInternas || ""}</textarea>
+
 <label style="
 display:block;
 margin-bottom:10px;
@@ -771,23 +790,6 @@ Mensagem para o Cliente
         color:white;
     "
 >${pedido.observacoesCliente || ""}</textarea>
-    ${pedido.estado === "Concluído"
-    ? "disabled"
-    : ""}
-
-    class="obsInternas"
-    data-id="${pedido.pedidoID}"
-    style="
-        width:100%;
-        min-height:120px;
-        margin-bottom:18px;
-        background:rgba(255,255,255,0.05);
-        border:1px solid rgba(255,255,255,0.08);
-        border-radius:16px;
-        padding:16px;
-        color:white;
-    "
->${pedido.observacoesInternas || ""}</textarea>
 
 <button
 
