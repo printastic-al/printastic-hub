@@ -715,7 +715,11 @@ Estado
     >
         Novo
     </option>
-
+<option value="Em Revisão"
+${pedido.estado === "Em Revisão" ? "selected" : ""}
+>
+    Em Revisão
+</option>
     <option value="Em Produção"
     ${pedido.estado === "Em Produção" ? "selected" : ""}
     >
@@ -739,7 +743,34 @@ Observações Internas
 </label>
 
 <textarea
+<label style="
+display:block;
+margin-bottom:10px;
+font-weight:700;
+">
+Mensagem para o Cliente
+</label>
 
+<textarea
+
+    ${pedido.estado === "Concluído"
+    ? "disabled"
+    : ""}
+
+    class="obsCliente"
+    data-id="${pedido.pedidoID}"
+    placeholder="Ex: Estamos a rever os ficheiros enviados."
+    style="
+        width:100%;
+        min-height:120px;
+        margin-bottom:18px;
+        background:rgba(255,255,255,0.05);
+        border:1px solid rgba(255,255,255,0.08);
+        border-radius:16px;
+        padding:16px;
+        color:white;
+    "
+>${pedido.observacoesCliente || ""}</textarea>
     ${pedido.estado === "Concluído"
     ? "disabled"
     : ""}
@@ -907,7 +938,9 @@ function guardarEstado(pedidoID){
     const observacoesInternas = document.querySelector(
         `.obsInternas[data-id="${pedidoID}"]`
     ).value;
-
+const observacoesCliente = document.querySelector(
+    `.obsCliente[data-id="${pedidoID}"]`
+).value;
     fetch(API_URL,{
 
         method:"POST",
@@ -920,7 +953,8 @@ function guardarEstado(pedidoID){
 
             estado:estado,
 
-            observacoesInternas:observacoesInternas
+            observacoesInternas:observacoesInternas,
+observacoesCliente:observacoesCliente
 
         })
 
