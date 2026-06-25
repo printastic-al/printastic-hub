@@ -814,6 +814,23 @@ line-height:1.6;
 ${infoRecompensa(pedido)}
 
 </div>
+${pedido.estadoRecompensa === "Validada" || pedido.estadoRecompensa === "Recusada" ? `
+
+<div style="
+margin-top:18px;
+padding:14px;
+border-radius:14px;
+background:rgba(255,255,255,0.12);
+font-weight:900;
+text-align:center;
+">
+
+${pedido.estadoRecompensa === "Validada" ? "✅ Recompensa já validada" : "❌ Recompensa já recusada"}
+
+</div>
+
+` : `
+
 <div style="
 display:flex;
 gap:10px;
@@ -875,6 +892,8 @@ ${podeValidarRecompensa(pedido) ? `
 </button>
 
 </div>
+
+`}
 </div>
 
 ` : ""}
@@ -1347,8 +1366,42 @@ function enviarWhatsapp(pedidoID){
 
     }
 
-    const mensagem =
-        `Olá ${pedido.nome}, o teu pedido ${pedidoID} está concluído. Já podes combinar connosco a entrega/levantamento. Obrigado!`;
+    let mensagem = "";
+
+if(pedido.usarRecompensa === "SIM" &&
+   pedido.estadoRecompensa === "Validada"){
+
+    mensagem =
+`Olá ${pedido.nome}! 👋
+
+O teu ${pedidoID} está concluído e pronto para entrega. 🎉
+
+🎁 Neste pedido utilizaste a tua recompensa:
+
+${pedido.recompensaPedida}
+
+Esperamos que a aproveites ao máximo!
+
+Obrigado por continuares a confiar na Printastic_Al.
+
+✨ Se imaginas, criamos!`;
+
+}else{
+
+    mensagem =
+`Olá ${pedido.nome}! 👋
+
+O teu ${pedidoID} está concluído e pronto para entrega. 🎉
+
+⭐ Saldo atual de Printastic Points:
+
+${pedido.pontosCliente} pontos
+
+Obrigado por continuares a confiar na Printastic_Al.
+
+✨ Se imaginas, criamos!`;
+
+}
 
     const url =
         "https://wa.me/" +
