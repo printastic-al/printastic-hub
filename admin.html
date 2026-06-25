@@ -1695,7 +1695,10 @@ pedidoID:pedidoID
         if(res.success){
 
             alert("Pontos atribuídos com sucesso.");
+botao.disabled = true;
 
+botao.innerHTML =
+"✅ Pontos atribuídos";
             input.value="";
 
         }else{
