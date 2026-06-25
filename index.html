@@ -1212,7 +1212,90 @@ textarea{
                     </div>
 
                 </div>
+<div class="section">
 
+    <div class="sectionTitle">
+
+        <div class="sectionIcon">
+            🎁
+        </div>
+
+        Printastic Points
+
+    </div>
+
+    <div class="field full">
+
+        <label style="
+            display:flex;
+            align-items:center;
+            gap:12px;
+            cursor:pointer;
+        ">
+
+            <input
+                type="checkbox"
+                id="usarRecompensa"
+                onchange="toggleRecompensa()"
+                style="
+                    width:auto;
+                "
+            >
+
+            Quero utilizar uma recompensa Printastic Points neste pedido
+
+        </label>
+
+    </div>
+
+    <div
+        id="boxRecompensa"
+        style="
+            display:none;
+            margin-top:18px;
+            padding:22px;
+            border-radius:24px;
+            background:rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.08);
+        "
+    >
+
+        <label>
+            Escolhe a recompensa pretendida
+        </label>
+
+        <select id="recompensaPedida">
+
+            <option value="">
+                Selecionar recompensa
+            </option>
+
+            <option value="1 metro grátis">
+                1 metro DTF grátis — 10 pontos
+            </option>
+
+            <option value="3 metros grátis">
+                3 metros DTF grátis — 20 pontos
+            </option>
+
+            <option value="5 metros grátis">
+                5 metros DTF grátis — 30 pontos
+            </option>
+
+        </select>
+
+        <div style="
+            margin-top:14px;
+            color:#94a3b8;
+            font-size:14px;
+            line-height:1.6;
+        ">
+            A recompensa será sempre validada pela equipa Printastic antes da produção.
+        </div>
+
+    </div>
+
+</div>
                 <button 
                     type="submit"
                     class="submitBtn"
@@ -1508,6 +1591,20 @@ if(extensao === "png"){
         "listaFicheiros"
     ).innerHTML = html;
 
+}   
+function toggleRecompensa(){
+
+    const checked =
+        document.getElementById(
+            "usarRecompensa"
+        ).checked;
+
+    document.getElementById(
+        "boxRecompensa"
+    ).style.display = checked
+    ? "block"
+    : "none";
+
 }    
 form.addEventListener("submit", async (e)=>{
 
@@ -1531,6 +1628,18 @@ for(let largura of larguras){
     }
 
 }
+if(
+    document.getElementById("usarRecompensa").checked &&
+    document.getElementById("recompensaPedida").value === ""
+){
+
+    alert(
+        "Seleciona a recompensa Printastic Points que pretendes utilizar."
+    );
+
+    return;
+
+}    
     const btn = document.querySelector("button");
 
     btn.disabled = true;
@@ -1548,6 +1657,9 @@ document.getElementById(
         tipoPedido:document.getElementById("tipoPedido").value,
         observacoes:document.getElementById("observacoes").value,
         canvaLink:document.getElementById("canvaLink").value,
+        usarRecompensa:document.getElementById("usarRecompensa").checked ? "SIM" : "NÃO",
+recompensaPedida:document.getElementById("recompensaPedida").value,
+estadoRecompensa:document.getElementById("usarRecompensa").checked ? "Por Validar" : "",
         tipoEntrega:document.getElementById("tipoEntrega").value,
 
 
