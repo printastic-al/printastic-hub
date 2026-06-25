@@ -1278,7 +1278,17 @@ ficheirosInput.addEventListener("change",()=>{
         .toLowerCase()
         .split(".")
         .pop();
+// Limite máximo de 25 MB
 
+if(file.size > 25 * 1024 * 1024){
+
+    alert(
+        `O ficheiro "${file.name}" excede o limite máximo de 25 MB.`
+    );
+
+    return;
+
+}
         if(
             extensao !== "png" &&
             extensao !== "pdf"
