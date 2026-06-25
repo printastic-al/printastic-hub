@@ -1316,7 +1316,32 @@ function renderFicheiros(){
         const preview = extensao === "png"
         ? URL.createObjectURL(file)
         : null;
+let avisoQualidade = "";
 
+if(extensao === "png"){
+
+    const imgTeste = new Image();
+
+    imgTeste.src = preview;
+
+    imgTeste.onload = ()=>{
+
+        if(
+            imgTeste.width < 1200 ||
+            imgTeste.height < 1200
+        ){
+
+            alert(
+                "Atenção: o ficheiro " +
+                file.name +
+                " pode ter pouca qualidade para impressão."
+            );
+
+        }
+
+    };
+
+}
         html += `
 
         <div class="fileItem">
