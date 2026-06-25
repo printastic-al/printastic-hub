@@ -1069,7 +1069,7 @@ color:white;
 ">
 
 <button
-onclick="atribuirPontos('${pedido.email}','${pedido.nome}',this)"
+onclick="atribuirPontos('${pedido.email}','${pedido.nome}','${pedido.pedidoID}',this)"
 style="
 width:100%;
 border:none;
@@ -1547,7 +1547,7 @@ window.onload = function(){
     janela.document.close();
 
 }
-function atribuirPontos(email,nome,botao){
+function atribuirPontos(email,nome,pedidoID,botao){
 
     const input = botao.parentElement.querySelector(".metrosProduzidos");
 
@@ -1573,7 +1573,9 @@ function atribuirPontos(email,nome,botao){
 
             nome:nome,
 
-            pontos:metros
+            pontos:metros,
+
+pedidoID:pedidoID
 
         })
 
