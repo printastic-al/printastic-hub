@@ -993,6 +993,59 @@ Mensagem para o Cliente
     💾 Guardar Estado
 
 </button>
+
+<div style="
+margin-top:20px;
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(255,255,255,0.08);
+">
+
+<h3 style="margin-bottom:16px;">
+⭐ Printastic Points
+</h3>
+
+<label>
+Metros produzidos
+</label>
+
+<input
+type="number"
+min="0"
+step="1"
+class="metrosProduzidos"
+data-email="${pedido.email}"
+data-nome="${pedido.nome}"
+placeholder="Ex: 3"
+style="
+width:100%;
+margin:10px 0 18px 0;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:16px;
+padding:16px;
+color:white;
+">
+
+<button
+onclick="atribuirPontos('${pedido.email}','${pedido.nome}',this)"
+style="
+width:100%;
+border:none;
+padding:16px;
+border-radius:16px;
+cursor:pointer;
+font-weight:800;
+color:white;
+background:linear-gradient(90deg,#f59e0b,#f97316);
+">
+
+⭐ Atribuir Pontos
+
+</button>
+
+</div>
 <button
     onclick="enviarWhatsapp('${pedido.pedidoID}')"
     style="
