@@ -1633,6 +1633,25 @@ function infoRecompensa(pedido){
     `;
 
 }
+function podeValidarRecompensa(pedido){
+
+    let necessarios = 0;
+
+    if(pedido.recompensaPedida === "1 metro grátis"){
+        necessarios = 10;
+    }
+
+    if(pedido.recompensaPedida === "3 metros grátis"){
+        necessarios = 20;
+    }
+
+    if(pedido.recompensaPedida === "5 metros grátis"){
+        necessarios = 30;
+    }
+
+    return Number(pedido.pontosCliente || 0) >= necessarios;
+
+}    
 function sairAdmin(){
 
     sessionStorage.removeItem(
