@@ -449,7 +449,15 @@ flex-wrap:wrap;
         >
 
     </div>
-
+<div
+    id="dashboardResumo"
+    style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+        gap:16px;
+        margin-bottom:26px;
+    "
+></div>
     <div
         class="grid"
         id="pedidosGrid"
@@ -536,10 +544,91 @@ async function carregarPedidos(){
 
     pedidos = await response.json();
 
-    renderPedidos();
+    renderDashboard();
+renderPedidos();
 
 }
+function renderDashboard(){
 
+    const novos = pedidos.filter(
+        p => p.estado === "Novo"
+    ).length;
+
+    const revisao = pedidos.filter(
+        p => p.estado === "Em Revisão"
+    ).length;
+
+    const producao = pedidos.filter(
+        p => p.estado === "Em Produção"
+    ).length;
+
+    const totalAtivos = pedidos.filter(
+        p => p.estado !== "Concluído"
+    ).length;
+
+    document.getElementById(
+        "dashboardResumo"
+    ).innerHTML = `
+
+        <div style="
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:22px;
+            padding:20px;
+        ">
+            <div style="color:#94a3b8;font-weight:700;">
+                Novos
+            </div>
+            <div style="font-size:34px;font-weight:900;">
+                ${novos}
+            </div>
+        </div>
+
+        <div style="
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:22px;
+            padding:20px;
+        ">
+            <div style="color:#94a3b8;font-weight:700;">
+                Em Revisão
+            </div>
+            <div style="font-size:34px;font-weight:900;">
+                ${revisao}
+            </div>
+        </div>
+
+        <div style="
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:22px;
+            padding:20px;
+        ">
+            <div style="color:#94a3b8;font-weight:700;">
+                Em Produção
+            </div>
+            <div style="font-size:34px;font-weight:900;">
+                ${producao}
+            </div>
+        </div>
+
+        <div style="
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:22px;
+            padding:20px;
+        ">
+            <div style="color:#94a3b8;font-weight:700;">
+                Ativos
+            </div>
+            <div style="font-size:34px;font-weight:900;">
+                ${totalAtivos}
+            </div>
+        </div>
+
+    `;
+
+}
 function renderPedidos(){
 
     const pesquisa =
