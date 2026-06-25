@@ -1203,7 +1203,7 @@ observacoesCliente:observacoesCliente
     });
 
 }
-function atualizarRecompensa(pedidoID, estado){
+function atualizarRecompensa(pedidoID, estado, motivo){
 
     fetch(API_URL,{
 
@@ -1215,7 +1215,9 @@ function atualizarRecompensa(pedidoID, estado){
 
             pedidoID:pedidoID,
 
-            estadoRecompensa:estado
+            estadoRecompensa:estado,
+
+            motivoRecompensa:motivo || ""
 
         })
 
@@ -1235,7 +1237,29 @@ function atualizarRecompensa(pedidoID, estado){
 
     });
 
-}    
+}
+
+function recusarRecompensa(pedidoID){
+
+    const motivo = prompt(
+        "Indica o motivo da recusa da recompensa:"
+    );
+
+    if(!motivo){
+
+        alert("Tens de indicar o motivo da recusa.");
+
+        return;
+
+    }
+
+    atualizarRecompensa(
+        pedidoID,
+        "Recusada",
+        motivo
+    );
+
+}  
 function enviarWhatsapp(pedidoID){
 
     alert("A abrir WhatsApp...");
