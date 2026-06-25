@@ -1356,52 +1356,103 @@ function enviarWhatsapp(pedidoID){
     let telefone = String(pedido.telemovel)
     .replace(/\D/g,"");
 
-    if(telefone.startsWith("351")){
-
-        telefone = telefone;
-
-    }else{
+    if(!telefone.startsWith("351")){
 
         telefone = "351" + telefone;
 
     }
 
+    const pontos = Number(pedido.pontosCliente || 0);
+
+    let proximaMeta = "";
+
+    if(pontos < 10){
+
+        proximaMeta =
+        `Faltam apenas ${10 - pontos} ponto(s) para receberes 1 metro DTF grátis. 🎁`;
+
+    }else if(pontos < 20){
+
+        proximaMeta =
+        `Faltam apenas ${20 - pontos} ponto(s) para receberes 3 metros DTF grátis. 🚀`;
+
+    }else if(pontos < 30){
+
+        proximaMeta =
+        `Faltam apenas ${30 - pontos} ponto(s) para receberes 5 metros DTF grátis. 🔥`;
+
+    }else{
+
+        proximaMeta =
+        `Já tens pontos suficientes para pedir 5 metros DTF grátis no próximo pedido. 🎉`;
+
+    }
+
     let mensagem = "";
 
-if(pedido.usarRecompensa === "SIM" &&
-   pedido.estadoRecompensa === "Validada"){
+    if(
+        pedido.usarRecompensa === "SIM" &&
+        pedido.estadoRecompensa === "Validada"
+    ){
 
-    mensagem =
+        mensagem =
 `Olá ${pedido.nome}! 👋
 
-O teu ${pedidoID} está concluído e pronto para entrega. 🎉
+O teu pedido ${pedidoID} está concluído e pronto para entrega. 🎉
 
-🎁 Neste pedido utilizaste a tua recompensa:
-
+🎁 Neste pedido utilizaste a tua recompensa Printastic Points:
 ${pedido.recompensaPedida}
 
-Esperamos que a aproveites ao máximo!
+⭐ Saldo atual:
+${pontos} ponto(s)
 
 Obrigado por continuares a confiar na Printastic_Al.
 
 ✨ Se imaginas, criamos!`;
 
-}else{
+    }else if(
+        pedido.usarRecompensa === "SIM" &&
+        pedido.estadoRecompensa === "Recusada"
+    ){
 
-    mensagem =
+        mensagem =
 `Olá ${pedido.nome}! 👋
 
-O teu ${pedidoID} está concluído e pronto para entrega. 🎉
+O teu pedido ${pedidoID} está concluído e pronto para entrega. 🎉
 
-⭐ Saldo atual de Printastic Points:
+A recompensa Printastic Points pedida não foi validada.
 
-${pedido.pontosCliente} pontos
+Motivo:
+${pedido.motivoRecompensa || "Não reunia as condições necessárias."}
+
+⭐ Saldo atual:
+${pontos} ponto(s)
+
+${proximaMeta}
+
+Obrigado por confiares na Printastic_Al.
+
+✨ Se imaginas, criamos!`;
+
+    }else{
+
+        mensagem =
+`Olá ${pedido.nome}! 👋
+
+O teu pedido ${pedidoID} está concluído e pronto para entrega. 🎉
+
+⭐ Printastic Points
+
+Saldo atual:
+${pontos} ponto(s)
+
+${proximaMeta}
 
 Obrigado por continuares a confiar na Printastic_Al.
 
 ✨ Se imaginas, criamos!`;
 
-}
+    }
 
     const url =
         "https://wa.me/" +
@@ -1411,7 +1462,7 @@ Obrigado por continuares a confiar na Printastic_Al.
 
     window.location.href = url;
 
-}   
+}
 function gerarEtiqueta(pedidoID){
 
     const pedido = pedidos.find(
