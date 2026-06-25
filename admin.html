@@ -1150,6 +1150,39 @@ observacoesCliente:observacoesCliente
     });
 
 }
+function atualizarRecompensa(pedidoID, estado){
+
+    fetch(API_URL,{
+
+        method:"POST",
+
+        body:JSON.stringify({
+
+            action:"atualizarRecompensa",
+
+            pedidoID:pedidoID,
+
+            estadoRecompensa:estado
+
+        })
+
+    })
+
+    .then(()=>{
+
+        alert("Estado da recompensa atualizado.");
+
+        carregarPedidos();
+
+    })
+
+    .catch(()=>{
+
+        alert("Erro ao atualizar recompensa.");
+
+    });
+
+}    
 function enviarWhatsapp(pedidoID){
 
     alert("A abrir WhatsApp...");
