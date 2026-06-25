@@ -1473,6 +1473,64 @@ window.onload = function(){
     janela.document.close();
 
 }
+function atribuirPontos(email,nome,botao){
+
+    const input = botao.parentElement.querySelector(".metrosProduzidos");
+
+    const metros = parseInt(input.value);
+
+    if(isNaN(metros) || metros <= 0){
+
+        alert("Indica os metros completos produzidos.");
+
+        return;
+
+    }
+
+    fetch(API_URL,{
+
+        method:"POST",
+
+        body:JSON.stringify({
+
+            action:"atualizarPontos",
+
+            email:email,
+
+            nome:nome,
+
+            pontos:metros
+
+        })
+
+    })
+
+    .then(r=>r.json())
+
+    .then(res=>{
+
+        if(res.success){
+
+            alert("Pontos atribuídos com sucesso.");
+
+            input.value="";
+
+        }else{
+
+            alert("Erro ao atribuir pontos.");
+
+        }
+
+    })
+
+    .catch(()=>{
+
+        alert("Erro ao comunicar com o servidor.");
+
+    });
+
+}
+
 function sairAdmin(){
 
     sessionStorage.removeItem(
