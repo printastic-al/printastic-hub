@@ -789,11 +789,29 @@ ${pedido.recompensaPedida}
 
 </div>
 
-<div>
+<div style="margin-bottom:8px;">
+
+<b>Pontos atuais:</b><br>
+
+⭐ ${pedido.pontosCliente || 0} pontos
+
+</div>
+
+<div style="margin-bottom:8px;">
 
 <b>Estado:</b>
 
 ${pedido.estadoRecompensa || "Por Validar"}
+
+</div>
+
+<div style="
+margin-top:10px;
+font-size:14px;
+line-height:1.6;
+">
+
+${infoRecompensa(pedido)}
 
 </div>
 <div style="
@@ -1554,7 +1572,45 @@ function atribuirPontos(email,nome,botao){
     });
 
 }
+function infoRecompensa(pedido){
 
+    let necessarios = 0;
+
+    if(pedido.recompensaPedida === "1 metro grátis"){
+        necessarios = 10;
+    }
+
+    if(pedido.recompensaPedida === "3 metros grátis"){
+        necessarios = 20;
+    }
+
+    if(pedido.recompensaPedida === "5 metros grátis"){
+        necessarios = 30;
+    }
+
+    const pontos = Number(pedido.pontosCliente || 0);
+
+    if(!necessarios){
+        return "";
+    }
+
+    if(pontos >= necessarios){
+
+        return `
+            ✅ Pode validar esta recompensa.<br>
+            Necessários: ${necessarios} pontos<br>
+            Após validar ficará com: ${pontos - necessarios} pontos
+        `;
+
+    }
+
+    return `
+        ❌ Pontos insuficientes.<br>
+        Necessários: ${necessarios} pontos<br>
+        Faltam: ${necessarios - pontos} pontos
+    `;
+
+}
 function sairAdmin(){
 
     sessionStorage.removeItem(
