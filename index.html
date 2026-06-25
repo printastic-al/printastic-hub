@@ -1525,10 +1525,9 @@ for(let file of ficheirosSelecionados){
 
     if(file.type === "image/png"){
 
-        ficheiroFinal =
-            await compressImage(file);
+    ficheiroFinal = file;
 
-    }
+}
 
     const formData = new FormData();
 
