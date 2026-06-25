@@ -761,6 +761,45 @@ margin-top:20px;
 padding-top:20px;
 border-top:1px solid rgba(255,255,255,0.08);
 ">
+${pedido.usarRecompensa === "SIM" ? `
+
+<div style="
+margin-bottom:20px;
+padding:22px;
+border-radius:20px;
+background:linear-gradient(135deg,#6d28d9,#7c3aed);
+border:1px solid rgba(255,255,255,.15);
+">
+
+<div style="
+font-size:22px;
+font-weight:900;
+margin-bottom:16px;
+">
+
+🟣 PRINTASTIC POINTS
+
+</div>
+
+<div style="margin-bottom:8px;">
+
+<b>Recompensa pedida:</b><br>
+
+${pedido.recompensaPedida}
+
+</div>
+
+<div>
+
+<b>Estado:</b>
+
+${pedido.estadoRecompensa || "Por Validar"}
+
+</div>
+
+</div>
+
+` : ""}
 <div style="
     margin-bottom:18px;
     padding:14px;
