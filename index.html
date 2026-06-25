@@ -1547,19 +1547,19 @@ for(let file of ficheirosSelecionados){
 );
 
     const cloudinaryResponse =
-        await fetch(
+    await fetch(
 
-        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`,
+    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`,
 
-        {
+    {
 
-            method:"POST",
+        method:"POST",
 
-            body:formData
+        body:formData
 
-        }
+    }
 
-    );
+);
 
     const cloudinaryData =
         await cloudinaryResponse.json();
