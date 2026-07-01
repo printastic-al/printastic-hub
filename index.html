@@ -899,7 +899,78 @@ textarea{
 </head>
 
 <body>
+<div id="avisoPopup" style="
+position:fixed;
+inset:0;
+background:rgba(2,6,23,0.82);
+backdrop-filter:blur(10px);
+z-index:999999;
+display:none;
+align-items:center;
+justify-content:center;
+padding:22px;
+">
 
+<div style="
+width:100%;
+max-width:520px;
+background:rgba(15,23,42,0.96);
+border:1px solid rgba(255,255,255,0.12);
+border-radius:34px;
+padding:30px;
+box-shadow:0 25px 80px rgba(0,0,0,0.45);
+text-align:center;
+color:white;
+">
+
+<div id="avisoImagem"></div>
+
+<h2 id="avisoTitulo" style="
+font-size:32px;
+font-weight:900;
+margin-bottom:16px;
+"></h2>
+
+<div id="avisoMensagem" style="
+color:#cbd5e1;
+font-size:17px;
+line-height:1.7;
+margin-bottom:24px;
+white-space:pre-line;
+"></div>
+
+<button id="avisoBotao" style="
+display:none;
+width:100%;
+border:none;
+padding:17px;
+border-radius:18px;
+font-size:16px;
+font-weight:900;
+cursor:pointer;
+color:white;
+background:linear-gradient(90deg,#6366f1,#8b5cf6,#06b6d4);
+margin-bottom:12px;
+">
+</button>
+
+<button onclick="fecharAviso()" style="
+width:100%;
+border:none;
+padding:15px;
+border-radius:18px;
+font-size:15px;
+font-weight:800;
+cursor:pointer;
+color:white;
+background:rgba(255,255,255,0.08);
+">
+Fechar
+</button>
+
+</div>
+
+</div>
 <div class="container">
 
     <div class="hero">
