@@ -2131,6 +2131,102 @@ function copiarLinkPedido(link){
     );
 
 }    
+function fecharAviso(){
+
+    document.getElementById(
+        "avisoPopup"
+    ).style.display = "none";
+
+}
+
+async function carregarAviso(){
+
+    try{
+
+        const response = await fetch(
+            API_URL + "?action=obterAviso"
+        );
+
+        const result = await response.json();
+
+        if(!result.success){
+            return;
+        }
+
+        const aviso = result.aviso;
+
+        document.getElementById(
+            "avisoTitulo"
+        ).innerHTML = aviso.titulo || "";
+
+        document.getElementById(
+            "avisoMensagem"
+        ).innerHTML = aviso.mensagem || "";
+
+        if(aviso.imagemURL){
+
+            document.getElementById(
+                "avisoImagem"
+            ).innerHTML = `
+                <img
+                    src="${aviso.imagemURL}"
+                    style="
+                        width:100%;
+                        max-height:240px;
+                        object-fit:contain;
+                        border-radius:22px;
+                        margin-bottom:22px;
+                    "
+                >
+            `;
+
+        }
+
+        if(aviso.botaoTexto){
+
+            const botao =
+                document.getElementById("avisoBotao");
+
+            botao.style.display = "block";
+
+            botao.innerHTML =
+                aviso.botaoTexto;
+
+            botao.onclick = ()=>{
+
+                if(aviso.botaoLink){
+
+                    window.open(
+                        aviso.botaoLink,
+                        "_blank"
+                    );
+
+                }else{
+
+                    fecharAviso();
+
+                }
+
+            };
+
+        }
+
+        document.getElementById(
+            "avisoPopup"
+        ).style.display = "flex";
+
+    }catch(error){
+
+        console.log(
+            "Sem aviso ativo."
+        );
+
+    }
+
+}
+
+carregarAviso();
+
 </script>
 
 </body>
