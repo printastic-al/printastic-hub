@@ -535,56 +535,60 @@ let pedidos = [];
 
 async function carregarPedidos(){
 
-    try{
+    document.getElementById("pedidosGrid").innerHTML = `
+        <div class="empty">
+            A carregar pedidos...
+        </div>
+    `;
 
-        document.getElementById("pedidosGrid").innerHTML = `
-            <div class="empty">
-                A carregar pedidos...
-            </div>
-        `;
-
-        const response = await fetch(
-            API_URL + "?action=listarPedidos&nocache=" + Date.now()
-        );
-
-        const texto = await response.text();
-
-        let resultado;
+    for(let tentativa = 1; tentativa <= 4; tentativa++){
 
         try{
 
-            resultado = JSON.parse(texto);
+            const response = await fetch(
+                API_URL + "?action=listarPedidos&nocache=" + Date.now()
+            );
 
-        }catch(e){
+            const texto = await response.text();
 
-            console.error("Resposta inválida da API:", texto);
+            if(!response.ok){
+                throw new Error("HTTP " + response.status);
+            }
 
-            document.getElementById("pedidosGrid").innerHTML = `
-                <div class="empty">
-                    Erro ao carregar pedidos.<br><br>
-                    A API devolveu uma resposta inválida.
-                </div>
-            `;
+            const resultado = JSON.parse(texto);
+
+            pedidos = resultado;
+
+            renderDashboard();
+            renderPedidos();
 
             return;
 
+        }catch(error){
+
+            console.warn(
+                "Tentativa " + tentativa + " falhou:",
+                error
+            );
+
+            if(tentativa < 4){
+
+                await new Promise(resolve =>
+                    setTimeout(resolve, 1200)
+                );
+
+            }else{
+
+                document.getElementById("pedidosGrid").innerHTML = `
+                    <div class="empty">
+                        Erro ao carregar pedidos.<br><br>
+                        Atualiza a página ou tenta novamente dentro de alguns segundos.
+                    </div>
+                `;
+
+            }
+
         }
-
-        pedidos = resultado;
-
-        renderDashboard();
-        renderPedidos();
-
-    }catch(error){
-
-        console.error(error);
-
-        document.getElementById("pedidosGrid").innerHTML = `
-            <div class="empty">
-                Erro ao comunicar com a API.<br><br>
-                Atualiza a página ou confirma o link da Web App.
-            </div>
-        `;
 
     }
 
