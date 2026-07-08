@@ -535,17 +535,58 @@ let pedidos = [];
 
 async function carregarPedidos(){
 
-    const response = await fetch(
+    try{
 
-        API_URL +
-        "?action=listarPedidos"
+        document.getElementById("pedidosGrid").innerHTML = `
+            <div class="empty">
+                A carregar pedidos...
+            </div>
+        `;
 
-    );
+        const response = await fetch(
+            API_URL + "?action=listarPedidos&nocache=" + Date.now()
+        );
 
-    pedidos = await response.json();
+        const texto = await response.text();
 
-    renderDashboard();
-renderPedidos();
+        let resultado;
+
+        try{
+
+            resultado = JSON.parse(texto);
+
+        }catch(e){
+
+            console.error("Resposta inválida da API:", texto);
+
+            document.getElementById("pedidosGrid").innerHTML = `
+                <div class="empty">
+                    Erro ao carregar pedidos.<br><br>
+                    A API devolveu uma resposta inválida.
+                </div>
+            `;
+
+            return;
+
+        }
+
+        pedidos = resultado;
+
+        renderDashboard();
+        renderPedidos();
+
+    }catch(error){
+
+        console.error(error);
+
+        document.getElementById("pedidosGrid").innerHTML = `
+            <div class="empty">
+                Erro ao comunicar com a API.<br><br>
+                Atualiza a página ou confirma o link da Web App.
+            </div>
+        `;
+
+    }
 
 }
 function renderDashboard(){
