@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-PT">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Produção | Printastic 360</title>
+<style>
+  * { box-sizing: border-box }
+  body { margin: 0 auto; padding: 2rem 1rem; max-width: 76rem; font: 16px system-ui,sans-serif; color: #172036; background: #f1f4fa }
+  h1 { margin: .45rem 0 1.4rem; font-size: clamp(2rem,5vw,3.4rem); letter-spacing: -.04em }
+  h2 { margin: 0 0 1rem; font-size: 1.25rem }
+  section, details { background: white; border: 1px solid #dbe2ef; padding: 1.25rem; border-radius: 1rem; margin-bottom: 1rem }
+  summary { cursor: pointer; font-weight: 700 }
+  form { display: grid; gap: .85rem; grid-template-columns: repeat(auto-fit,minmax(min(100%,12rem),1fr)); align-items: end }
+  details form { margin-top: 1rem }
+  label { display: grid; gap: .35rem; font-size: .88rem; font-weight: 600 }
+  input,select,button { font: inherit; padding: .65rem; border-radius: .5rem; min-width: 0 }
+  input,select { border: 1px solid #aab7ce; width: 100%; background: white }
+  button { color: white; background: #4338ca; border: 0; cursor: pointer }
+  button:disabled { opacity: .6; cursor: wait }
+  a { color: #3730a3 }
+  .columns { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,27rem),1fr)); gap: 1rem }
+  article + article { border-top: 1px solid #dbe2ef; padding-top: .9rem; margin-top: .9rem }
+  article p { margin: .4rem 0; overflow-wrap: anywhere }
+  [role="status"] { min-height: 1.5rem }
+  .late { color: #a42029; font-weight: 700 }
+</style>
+<a href="./admin.html">Printastic Hub</a>
+<h1>Printastic 360 · Produção</h1>
+<details id="connection" open>
+  <summary>Ligação à API</summary>
+  <form id="login">
+    <label>Endereço HTTPS da API<input name="endpoint" type="url" required></label>
+    <label>Chave de acesso<input name="token" type="password" autocomplete="off" required></label>
+    <button>Ligar</button>
+  </form>
+</details>
+<p id="status" role="status"></p>
+<main id="workspace" hidden>
+  <div class="columns">
+    <details>
+      <summary>Ficha de produto</summary>
+      <form id="product">
+        <label>Referência<input name="sku" required maxlength="180"></label>
+        <label>Produto<input name="name" required maxlength="180"></label>
+        <label>Fornecedor<input name="supplier" required maxlength="180"></label>
+        <label>Link do produto<input name="url" type="url" required maxlength="2048"></label>
+        <label>Custo unitário (€)<input name="cost" inputmode="decimal" required></label>
+        <label>Stock disponível<input name="stock" type="number" min="0" max="1000000" value="0" required></label>
+        <button>Guardar produto</button>
+      </form>
+    </details>
+    <details>
+      <summary>Linha de encomenda</summary>
+      <form id="order">
+        <label>Encomenda<input name="reference" required maxlength="180"></label>
+        <label>Cliente<input name="customer" required maxlength="180"></label>
+        <label>Prazo<input name="due" type="date" required></label>
+        <label>Produto<select name="sku" required></select></label>
+        <label>Quantidade<input name="quantity" type="number" min="1" max="1000000" required></label>
+        <label>Instruções de trabalho<input name="notes" maxlength="1500"></label>
+        <button>Guardar linha</button>
+      </form>
+    </details>
+  </div>
+  <div class="columns">
+    <section><h2>Fila de produção</h2><div id="queue"></div></section>
+    <section><h2>Compras necessárias</h2><div id="purchases"></div></section>
+  </div>
+  <section><h2>Catálogo</h2><div id="catalog"></div></section>
+</main>
+<script type="module" src="./printastic360.mjs"></script>
+</html>
